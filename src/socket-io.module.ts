@@ -1,4 +1,4 @@
-import { ModuleWithProviders } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { SocketIoConfig } from './config/socket-io.config';
 import { WrappedSocket } from './socket-io.service';
 
@@ -9,6 +9,7 @@ export function SocketFactory(config: SocketIoConfig) {
 
 export const socketConfig: string = "__SOCKET_IO_CONFIG__";
 
+@NgModule({})
 export class SocketIoModule {
   static forRoot(config: SocketIoConfig): ModuleWithProviders {
         return {

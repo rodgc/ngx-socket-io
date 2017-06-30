@@ -34,7 +34,7 @@ export class WrappedSocket {
         return this.ioSocket.disconnect.apply(this.ioSocket, arguments);
     }
 
-    emit(eventName: string, data: any, callback?: Function) {
+    emit(eventName: string, data?: any, callback?: Function) {
         return this.ioSocket.emit.apply(this.ioSocket, arguments);
     }
 

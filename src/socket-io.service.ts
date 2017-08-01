@@ -10,10 +10,15 @@ import { SocketIoConfig } from './config/socket-io.config';
 export class WrappedSocket {
     subscribersCounter : number = 0;
     ioSocket: any;
+    emptyConfig: SocketIoConfig = {
+        url: '',
+        options: {}
+    };
 
-    constructor(config: SocketIoConfig) {
-        const url: string = config.url || '';
-        const options: any = config.options || {};
+    constructor(config?: SocketIoConfig) {
+        if (config === undefined) config = this.emptyConfig;
+        const url: string = config.url;
+        const options: any = config.options;
         var ioFunc = (io as any).default ? (io as any).default : io;
         this.ioSocket = ioFunc(url, options);
     }

@@ -3,7 +3,7 @@ import { SocketIoConfig } from './config/socket-io.config';
 import { WrappedSocket } from './socket-io.service';
 
 /** Socket factory */
-export function SocketFactory(config: SocketIoConfig) {
+export function SocketFactory(config?: SocketIoConfig) {
     return new WrappedSocket(config);
 }
 

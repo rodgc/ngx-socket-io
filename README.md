@@ -1,11 +1,9 @@
 # ngx-socket-io
 [![Build Status](https://travis-ci.org/rodgc/ngx-socket-io.svg?branch=master)](https://travis-ci.org/rodgc/ngx-socket-io)
 [![npm version](https://badge.fury.io/js/ngx-socket-io.svg)](https://badge.fury.io/js/ngx-socket-io)
-[![npm downloads](https://img.shields.io/badge/Downloads-2%2Fmonth-brightgreen.svg)](https://github.com/rodgc/ngx-socket-io)
+[![npm downloads](https://img.shields.io/badge/Downloads-132%2Fmonth-brightgreen.svg)](https://github.com/rodgc/ngx-socket-io)
 
 [Socket.IO](http://socket.io/) module for Angular 4
-
-Fork of [ng2-socket-io](https://github.com/bougarfaoui/ng2-socket-io) - [bougarfaoui](https://github.com/bougarfaoui)
 
 ## Install
 ``` npm install ngx-socket-io ```
@@ -124,7 +122,7 @@ Works the same as in Socket.IO.
 Takes an event name.
 Works the same as in Socket.IO.
 
-### `socket.emit(eventName:string, message: any, [callback: Function])`
+### `socket.emit(eventName:string, message?: any, [callback: Function])`
 Sends a message to the server.
 Optionally takes a callback.
 Works the same as in Socket.IO.
@@ -132,60 +130,20 @@ Works the same as in Socket.IO.
 ### `socket.fromEvent<T>(eventName: string): Observable<T>`
 Takes an event name and returns an Observable that you can subscribe to.
 
+### `socket.fromEventOnce<T>(eventName: string): Promise<T>`
+Creates a Promise for a one-time event.
+
 You should keep a reference to the Observable subscription and unsubscribe when you're done with it.
 This prevents memory leaks as the event listener attached will be removed (using ```socket.removeListener```) ONLY and when/if you unsubscribe.
 
 If you have multiple subscriptions to an Observable only the last unsubscription will remove the listener.
 
-##### Example
-
-You can also see this [example](https://github.com/rodgc/ngx-socket-io/tree/master/examples/chat-app) with express.js.
-
-```typescript
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { AppComponent } from './app.component';
-
-import { SocketIoModule, SocketIoConfig, Socket} from 'ngx-socket-io';
-
-const config: SocketIoConfig = { url: 'http://localhost:8988', options: {} };
-
-@Injectable()
-class ChatService {
-
-    constructor(private socket: Socket) { }
-
-    sendMessage(msg: string){
-        this.socket.emit("message", msg);
-    }
-
-    getMessage() {
-        return this.socket
-            .fromEvent<any>("message")
-            .map(data => data.msg );
-    }
-    
-    close() {
-      this.socket.disconnect()
-    }
-}
-
-
-@NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    SocketIoModule.forRoot(config) 
-  ],
-  providers: [ChatService],
-  bootstrap: [AppComponent]
-})
-export class AppModule { }
-```
-
 
 ## LICENSE
 
 MIT
+
+Related projects
+----------------
+
+- [bougarfaoui/ng2-socket-io](https://github.com/bougarfaoui/ng2-socket-io) - Socket.IO module for Angular

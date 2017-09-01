@@ -1,10 +1,11 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable, EventEmitter, Inject } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share'; 
 
 import * as io from 'socket.io-client';
 
 import { SocketIoConfig } from './config/socket-io.config';
+import { SOCKET_CONFIG_TOKEN } from './socket-io.module';
 
 @Injectable()
 export class WrappedSocket {
@@ -15,7 +16,7 @@ export class WrappedSocket {
         options: {}
     };
 
-    constructor(config?: SocketIoConfig) {
+    constructor(@Inject(SOCKET_CONFIG_TOKEN) config: SocketIoConfig) {
         if (config === undefined) config = this.emptyConfig;
         const url: string = config.url;
         const options: any = config.options;

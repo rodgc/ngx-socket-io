@@ -146,4 +146,4 @@ MIT
 Related projects
 ----------------
 
-- [bougarfaoui/ng2-socket-io](https://github.com/bougarfaoui/ng2-socket-io) - Socket.IO module for Angular
+- [bougarfaoui/ng-socket-io](https://github.com/bougarfaoui/ng-socket-io) - Socket.IO module for Angular

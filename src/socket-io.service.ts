@@ -7,7 +7,6 @@ import * as io from 'socket.io-client';
 import { SocketIoConfig } from './config/socket-io.config';
 import { SOCKET_CONFIG_TOKEN } from './socket-io.module';
 
-@Injectable()
 export class WrappedSocket {
     subscribersCounter : number = 0;
     ioSocket: any;

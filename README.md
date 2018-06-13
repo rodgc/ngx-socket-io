@@ -35,11 +35,43 @@ We need to configure ```SocketIoModule``` module using the object ```config``` o
 
 Now we pass the configuration to the static method ```forRoot``` of ```SocketIoModule```
 
+
+### For Angular 6 Project in version 1.0.8
+
+ To be sure that you are using Angular 6, check your version:
+
+```bash
+
+ ng -v
+
+```
+
+If you are using Angular 6 you need change two thing
+
+1. Install rxjs-compat
+
+```bash
+
+npm install rxjs-compat
+
+```
+
+2. Change polyfills.ts
+
+Add this code in the first line of the file:
+
+```ts
+
+(window as any).global = window;
+
+```
+
 ### Using your socket Instance
 
 The ```SocketIoModule``` provides now a configured ```Socket``` service that can be injected anywhere inside the ```AppModule```.
 
 ```typescript
+
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 
@@ -51,13 +83,13 @@ export class ChatService {
     sendMessage(msg: string){
         this.socket.emit("message", msg);
     }
-    
-    getMessage() {
+     getMessage() {
         return this.socket
             .fromEvent("message")
             .map( data => data.msg );
     }
 }
+
 ```
 
 ### Using multiple sockets with different end points
@@ -65,6 +97,7 @@ export class ChatService {
 In this case we do not configure the ```SocketIoModule``` directly using ```forRoot```. What we have to do is: extend the ```Socket``` service, and call ```super()``` with the ```SocketIoConfig``` object type (passing ```url``` & ```options``` if any).
 
 ```typescript
+
 import { Injectable, NgModule } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 
@@ -98,7 +131,7 @@ export class SocketTwo extends Socket {
   bootstrap: [/** AppComponent **/]
 })
 export class AppModule { }
- 
+
 ```
 
 Now you can inject ```SocketOne```, ```SocketTwo``` in any other services and / or components.
@@ -111,26 +144,32 @@ Most of the functionalities here you are already familiar with.
 The only addition is the ```fromEvent``` method, which returns an ```Observable``` that you can subscribe to.
 
 ### `socket.on(eventName: string)`
+
 Takes an event name and callback.
 Works the same as in Socket.IO.
 
 ### `socket.removeListener(eventName: string, callback: Function)`
+
 Takes an event name and callback.
 Works the same as in Socket.IO.
 
 ### `socket.removeAllListeners(eventName: string)`
+
 Takes an event name.
 Works the same as in Socket.IO.
 
 ### `socket.emit(eventName:string, message?: any, [callback: Function])`
+
 Sends a message to the server.
 Optionally takes a callback.
 Works the same as in Socket.IO.
 
 ### `socket.fromEvent<T>(eventName: string): Observable<T>`
+
 Takes an event name and returns an Observable that you can subscribe to.
 
 ### `socket.fromEventOnce<T>(eventName: string): Promise<T>`
+
 Creates a Promise for a one-time event.
 
 You should keep a reference to the Observable subscription and unsubscribe when you're done with it.

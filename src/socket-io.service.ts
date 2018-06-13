@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter, Inject } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/share'; 
+import { Observable } from 'rxjs';
+import { share } from 'rxjs/operators';
 
 import * as io from 'socket.io-client';
 

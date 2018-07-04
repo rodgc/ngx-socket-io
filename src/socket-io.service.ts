@@ -61,7 +61,9 @@ export class WrappedSocket {
                  if (this.subscribersCounter === 1)
                     this.ioSocket.removeListener(eventName);
             };
-        }).share();
+        }).pipe(
+            share()
+        );
     }
 
     fromOneTimeEvent<T>(eventName: string): Promise<T> {

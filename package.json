@@ -1,7 +1,7 @@
 {
   "name": "ngx-socket-io",
-  "version": "1.1.0",
-  "description": "Socket.IO module for Angular 6",
+  "version": "2.0.0",
+  "description": "Socket.IO module for Angular 7",
   "main": "index.ts",
   "scripts": {
     "transpile": "ngc",
@@ -24,7 +24,6 @@
   },
   "homepage": "https://github.com/rodgc/ngx-socket-io#readme",
   "dependencies": {
-    "@angular/core": "^6.0.4",
     "core-js": "^2.4.1",
     "reflect-metadata": "^0.1.10",
     "rxjs": "^6.1.0",

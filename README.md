@@ -3,7 +3,7 @@
 [![npm version](https://badge.fury.io/js/ngx-socket-io.svg)](https://badge.fury.io/js/ngx-socket-io)
 [![npm downloads](https://img.shields.io/badge/Downloads-132%2Fmonth-brightgreen.svg)](https://github.com/rodgc/ngx-socket-io)
 
-[Socket.IO](http://socket.io/) module for Angular 4
+[Socket.IO](http://socket.io/) module for Angular 7
 
 ## Install
 ``` npm install ngx-socket-io ```
@@ -23,7 +23,7 @@ const config: SocketIoConfig = { url: 'http://localhost:8988', options: {} };
   ],
   imports: [
     BrowserModule,
-    SocketIoModule.forRoot(config) 
+    SocketIoModule.forRoot(config)
   ],
   providers: [],
   bootstrap: [AppComponent]

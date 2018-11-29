@@ -36,36 +36,6 @@ We need to configure ```SocketIoModule``` module using the object ```config``` o
 Now we pass the configuration to the static method ```forRoot``` of ```SocketIoModule```
 
 
-### For Angular 6 Project in version 1.0.8
-
- To be sure that you are using Angular 6, check your version:
-
-```bash
-
- ng -v
-
-```
-
-If you are using Angular 6 you need change two thing
-
-1. Install rxjs-compat
-
-```bash
-
-npm install rxjs-compat
-
-```
-
-2. Change polyfills.ts
-
-Add this code in the first line of the file:
-
-```ts
-
-(window as any).global = window;
-
-```
-
 ### Using your socket Instance
 
 The ```SocketIoModule``` provides now a configured ```Socket``` service that can be injected anywhere inside the ```AppModule```.
@@ -143,17 +113,22 @@ Most of the functionalities here you are already familiar with.
 
 The only addition is the ```fromEvent``` method, which returns an ```Observable``` that you can subscribe to.
 
-### `socket.on(eventName: string)`
+### `socket.of(namespace: string)`
+
+Takes an namespace.
+Works the same as in Socket.IO.
+
+### `socket.on(eventName: string, callback: Function)`
 
 Takes an event name and callback.
 Works the same as in Socket.IO.
 
-### `socket.removeListener(eventName: string, callback: Function)`
+### `socket.removeListener(eventName: string, callback?: Function)`
 
 Takes an event name and callback.
 Works the same as in Socket.IO.
 
-### `socket.removeAllListeners(eventName: string)`
+### `socket.removeAllListeners(eventName?: string)`
 
 Takes an event name.
 Works the same as in Socket.IO.

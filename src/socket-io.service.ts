@@ -23,6 +23,10 @@ export class WrappedSocket {
         this.ioSocket = ioFunc(url, options);
     }
 
+    of(namespace: string) {
+        this.ioSocket.of(namespace);
+    }
+
     on(eventName: string, callback: Function) {
         this.ioSocket.on(eventName, callback);
     }

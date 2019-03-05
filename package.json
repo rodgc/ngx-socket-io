@@ -23,6 +23,11 @@
     "url": "https://github.com/rodgc/ngx-socket-io/issues"
   },
   "homepage": "https://github.com/rodgc/ngx-socket-io#readme",
+  "ngPackage": {
+    "lib": {
+      "entryFile": "index.ts"
+    }
+  },
   "dependencies": {
     "core-js": "^2.4.1",
     "reflect-metadata": "^0.1.10",

@@ -4,11 +4,7 @@
   "description": "Socket.IO module for Angular 7",
   "main": "index.ts",
   "scripts": {
-    "transpile": "ngc",
-    "package": "rollup -c",
-    "minify": "uglifyjs dist/bundles/socketio.umd.js --screw-ie8 --compress --mangle --comments --output dist/bundles/socketio.umd.min.js",
-    "build": "npm run transpile && npm run package && npm run minify",
-    "build:packagr": "ng-packagr"
+    "build": "ng-packagr"
   },
   "repository": {
     "type": "git",

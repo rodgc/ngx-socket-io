@@ -1,4 +1,4 @@
-import { Injectable, EventEmitter, Inject } from '@angular/core';
+import { Inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { share } from 'rxjs/operators';
 

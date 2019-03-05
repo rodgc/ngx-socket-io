@@ -3,5 +3,12 @@
   "lib": {
     "entryFile": "index.ts"
   },
-  "whitelistedNonPeerDependencies": ["core-js"]
+  "whitelistedNonPeerDependencies": [
+    "core-js",
+    "reflect-metadata",
+    "rxjs",
+    "socket.io",
+    "socket.io-client",
+    "zone.js"
+  ]
 }

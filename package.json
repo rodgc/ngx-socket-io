@@ -15,8 +15,9 @@
     "url": "git+ssh://git@github.com/rodgc/ngx-socket-io.git"
   },
   "keywords": [
-    "Angular 4",
-    "Socket-io"
+    "Angular",
+    "Socket-io",
+    "TypeScript"
   ],
   "author": "rodgc",
   "license": "MIT",

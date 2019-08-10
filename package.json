@@ -1,7 +1,7 @@
 {
   "name": "ngx-socket-io",
   "version": "2.1.1",
-  "description": "Socket.IO module for Angular 7",
+  "description": "Socket.IO module for Angular",
   "main": "index.ts",
   "scripts": {
     "build": "ng-packagr"
@@ -22,28 +22,28 @@
   },
   "homepage": "https://github.com/rodgc/ngx-socket-io#readme",
   "dependencies": {
-    "core-js": "^2.4.1",
+    "core-js": "^3.0.0",
     "reflect-metadata": "^0.1.10",
     "rxjs": "^6.1.0",
     "socket.io": "^2.2.0",
     "socket.io-client": "^2.2.0",
-    "zone.js": "^0.8.11"
+    "zone.js": "^0.10.1"
   },
   "peerDependencies": {
-    "@angular/common": "^6.0.0 || ^7.0.0",
-    "@angular/core": "^6.0.0 || ^7.0.0",
-    "rxjs": "^6.0.0"
+    "@angular/common": "^8.0.0",
+    "@angular/core": "^8.0.0",
+    "rxjs": "^6.1.0"
   },
   "devDependencies": {
-    "@angular/compiler": "^5.0.0",
-    "@angular/compiler-cli": "^5.0.0",
-    "@angular/core": "^6.0.0 || ^7.0.0",
-    "@types/node": "^7.0.22",
-    "@types/socket.io": "^1.4.29",
-    "@types/socket.io-client": "^1.4.29",
-    "ng-packagr": "^4.7.1",
+    "@angular/compiler": "^8.0.0",
+    "@angular/compiler-cli": "^8.0.0",
+    "@angular/core": "^8.0.0",
+    "@types/node": "^12.7.1",
+    "@types/socket.io": "^2.1.2",
+    "@types/socket.io-client": "^1.4.32",
+    "ng-packagr": "^5.4.3",
     "server-destroy": "^1.0.1",
-    "tslint": "^5.4.0",
-    "typescript": "^3.3.0"
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.3"
   }
 }

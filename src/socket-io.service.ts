@@ -5,7 +5,6 @@ import { share } from 'rxjs/operators';
 import * as io from 'socket.io-client';
 
 import { SocketIoConfig } from './config/socket-io.config';
-import { SOCKET_CONFIG_TOKEN } from './socket-io.module';
 
 export class WrappedSocket {
     subscribersCounter : number = 0;
@@ -15,7 +14,7 @@ export class WrappedSocket {
         options: {}
     };
 
-    constructor(@Inject(SOCKET_CONFIG_TOKEN) config: SocketIoConfig) {
+    constructor(private config: SocketIoConfig) {
         if (config === undefined) config = this.emptyConfig;
         const url: string = config.url;
         const options: any = config.options;

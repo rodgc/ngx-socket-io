@@ -3,7 +3,7 @@
 [![npm version](https://badge.fury.io/js/ngx-socket-io.svg)](https://badge.fury.io/js/ngx-socket-io)
 [![npm downloads](https://img.shields.io/badge/Downloads-132%2Fmonth-brightgreen.svg)](https://github.com/rodgc/ngx-socket-io)
 
-[Socket.IO](http://socket.io/) module for Angular 7
+[Socket.IO](http://socket.io/) module for Angular
 
 ## Install
 ``` npm install ngx-socket-io ```
@@ -152,12 +152,27 @@ This prevents memory leaks as the event listener attached will be removed (using
 
 If you have multiple subscriptions to an Observable only the last unsubscription will remove the listener.
 
+## Know Issue
+
+For `error TS2345` you need to add this to your `tsconfig.json`.
+
+```json
+{
+  ...
+  "compilerOptions": {
+    ...
+    "paths": {
+      "rxjs": ["node_modules/rxjs"]
+    }
+  },
+}
+```
+
+## Related projects
+
+- [bougarfaoui/ng-socket-io](https://github.com/bougarfaoui/ng-socket-io) - Socket.IO module for Angular
 
 ## LICENSE
 
 MIT
 
-Related projects
-----------------
-
-- [bougarfaoui/ng-socket-io](https://github.com/bougarfaoui/ng-socket-io) - Socket.IO module for Angular

@@ -4,18 +4,16 @@
   "description": "Socket.IO module for Angular 7",
   "main": "index.ts",
   "scripts": {
-    "transpile": "ngc",
-    "package": "rollup -c",
-    "minify": "uglifyjs dist/bundles/socketio.umd.js --screw-ie8 --compress --mangle --comments --output dist/bundles/socketio.umd.min.js",
-    "build": "npm run transpile && npm run package && npm run minify"
+    "build": "ng-packagr"
   },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/rodgc/ngx-socket-io.git"
   },
   "keywords": [
-    "Angular 4",
-    "Socket-io"
+    "Angular",
+    "Socket-io",
+    "TypeScript"
   ],
   "author": "rodgc",
   "license": "MIT",
@@ -37,18 +35,15 @@
     "rxjs": "^6.0.0"
   },
   "devDependencies": {
-    "@angular/cli": "^1.1.0",
     "@angular/compiler": "^5.0.0",
     "@angular/compiler-cli": "^5.0.0",
+    "@angular/core": "^6.0.0 || ^7.0.0",
     "@types/node": "^7.0.22",
     "@types/socket.io": "^1.4.29",
     "@types/socket.io-client": "^1.4.29",
-    "es6-shim": "^0.35.3",
-    "rollup": "^0.41.6",
+    "ng-packagr": "^4.7.1",
     "server-destroy": "^1.0.1",
-    "ts-node": "^3.0.4",
     "tslint": "^5.4.0",
-    "typescript": "^2.4.2",
-    "uglify-js": "^3.0.14"
+    "typescript": "^3.3.0"
   }
 }

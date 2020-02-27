@@ -7,7 +7,7 @@ import * as io from 'socket.io-client';
 import { SocketIoConfig } from './config/socket-io.config';
 
 export class WrappedSocket {
-    subscribersCounter : number = 0;
+    subscribersCounter = 0;
     ioSocket: any;
     emptyConfig: SocketIoConfig = {
         url: '',
@@ -15,10 +15,12 @@ export class WrappedSocket {
     };
 
     constructor(private config: SocketIoConfig) {
-        if (config === undefined) config = this.emptyConfig;
+        if (config === undefined) {
+            config = this.emptyConfig;
+        }
         const url: string = config.url;
         const options: any = config.options;
-        var ioFunc = (io as any).default ? (io as any).default : io;
+        const ioFunc = (io as any).default ? (io as any).default : io;
         this.ioSocket = ioFunc(url, options);
     }
 
@@ -61,8 +63,9 @@ export class WrappedSocket {
                  observer.next(data);
              });
              return () => {
-                 if (this.subscribersCounter === 1)
+                 if (this.subscribersCounter === 1) {
                     this.ioSocket.removeListener(eventName);
+                 }
             };
         }).pipe(
             share()

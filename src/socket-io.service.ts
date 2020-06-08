@@ -7,7 +7,7 @@ import * as io from 'socket.io-client';
 import { SocketIoConfig } from './config/socket-io.config';
 
 export class WrappedSocket {
-    subscribersCounter = 0;
+    subscribersCounter: Record<string, number> = {};
     ioSocket: any;
     emptyConfig: SocketIoConfig = {
         url: '',
@@ -57,14 +57,19 @@ export class WrappedSocket {
     }
 
     fromEvent<T>(eventName: string): Observable<T> {
-        this.subscribersCounter++;
+        if (!this.subscribersCounter[eventName]) {
+            this.subscribersCounter[eventName] = 0;
+        }
+        this.subscribersCounter[eventName]++;
         return Observable.create( (observer: any) => {
-             this.ioSocket.on(eventName, (data: T) => {
-                 observer.next(data);
-             });
+            const listener = (data: T) => {
+                observer.next(data);
+            };
+             this.ioSocket.on(eventName, listener);
              return () => {
-                 if (this.subscribersCounter === 1) {
-                    this.ioSocket.removeListener(eventName);
+                 this.subscribersCounter[eventName]--;
+                 if (this.subscribersCounter[eventName] === 0) {
+                    this.ioSocket.removeListener(eventName, listener);
                  }
             };
         }).pipe(

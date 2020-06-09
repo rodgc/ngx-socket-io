@@ -8,6 +8,7 @@ import { SocketIoConfig } from './config/socket-io.config';
 
 export class WrappedSocket {
     subscribersCounter: Record<string, number> = {};
+    eventObservables$: Record<string, Observable<any>> = {};
     ioSocket: any;
     emptyConfig: SocketIoConfig = {
         url: '',
@@ -61,20 +62,25 @@ export class WrappedSocket {
             this.subscribersCounter[eventName] = 0;
         }
         this.subscribersCounter[eventName]++;
-        return Observable.create( (observer: any) => {
-            const listener = (data: T) => {
-                observer.next(data);
-            };
-             this.ioSocket.on(eventName, listener);
-             return () => {
-                 this.subscribersCounter[eventName]--;
-                 if (this.subscribersCounter[eventName] === 0) {
-                    this.ioSocket.removeListener(eventName, listener);
-                 }
-            };
-        }).pipe(
-            share()
-        );
+
+        if (!this.eventObservables$[eventName]) {
+            this.eventObservables$[eventName] = new Observable((observer: any) => {
+                const listener = (data: T) => {
+                    observer.next(data);
+                };
+                 this.ioSocket.on(eventName, listener);
+                 return () => {
+                     this.subscribersCounter[eventName]--;
+                     if (this.subscribersCounter[eventName] === 0) {
+                        this.ioSocket.removeListener(eventName, listener);
+                        this.eventObservables$[eventName] = undefined;
+                     }
+                };
+            }).pipe(
+                share()
+            );
+        }
+        return this.eventObservables$[eventName];
     }
 
     fromOneTimeEvent<T>(eventName: string): Promise<T> {

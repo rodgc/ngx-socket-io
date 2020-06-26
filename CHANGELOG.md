@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.1.0] - 2020-10-26
+
+### Updated
+
+- `Angular` dependencies to version 9.
+
+### Fixed
+
+- tslint warnings.
+
 ## [3.0.0] - 2019-08-10
 
 ### Updated

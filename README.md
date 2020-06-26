@@ -44,6 +44,7 @@ The ```SocketIoModule``` provides now a configured ```Socket``` service that can
 
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ChatService {
@@ -54,9 +55,9 @@ export class ChatService {
         this.socket.emit("message", msg);
     }
      getMessage() {
-        return this.socket
-            .fromEvent("message")
-            .map( data => data.msg );
+         return this.socket
+             .fromEvent("message")
+             .pipe(map((data) => data.msg));
     }
 }
 

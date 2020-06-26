@@ -7,7 +7,8 @@ import * as io from 'socket.io-client';
 import { SocketIoConfig } from './config/socket-io.config';
 
 export class WrappedSocket {
-    subscribersCounter = 0;
+    subscribersCounter: Record<string, number> = {};
+    eventObservables$: Record<string, Observable<any>> = {};
     ioSocket: any;
     emptyConfig: SocketIoConfig = {
         url: '',
@@ -44,7 +45,7 @@ export class WrappedSocket {
         return this.ioSocket.disconnect.apply(this.ioSocket, arguments);
     }
 
-    emit(eventName: string, data?: any, callback?: Function) {
+    emit(eventName: string, ...args: any[]) {
         return this.ioSocket.emit.apply(this.ioSocket, arguments);
     }
 
@@ -57,19 +58,29 @@ export class WrappedSocket {
     }
 
     fromEvent<T>(eventName: string): Observable<T> {
-        this.subscribersCounter++;
-        return Observable.create( (observer: any) => {
-             this.ioSocket.on(eventName, (data: T) => {
-                 observer.next(data);
-             });
-             return () => {
-                 if (this.subscribersCounter === 1) {
-                    this.ioSocket.removeListener(eventName);
-                 }
-            };
-        }).pipe(
-            share()
-        );
+        if (!this.subscribersCounter[eventName]) {
+            this.subscribersCounter[eventName] = 0;
+        }
+        this.subscribersCounter[eventName]++;
+
+        if (!this.eventObservables$[eventName]) {
+            this.eventObservables$[eventName] = new Observable((observer: any) => {
+                const listener = (data: T) => {
+                    observer.next(data);
+                };
+                 this.ioSocket.on(eventName, listener);
+                 return () => {
+                     this.subscribersCounter[eventName]--;
+                     if (this.subscribersCounter[eventName] === 0) {
+                        this.ioSocket.removeListener(eventName, listener);
+                        delete this.eventObservables$[eventName];
+                     }
+                };
+            }).pipe(
+                share()
+            );
+        }
+        return this.eventObservables$[eventName];
     }
 
     fromOneTimeEvent<T>(eventName: string): Promise<T> {

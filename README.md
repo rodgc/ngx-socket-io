@@ -134,10 +134,9 @@ Works the same as in Socket.IO.
 Takes an event name.
 Works the same as in Socket.IO.
 
-### `socket.emit(eventName:string, message?: any, [callback: Function])`
+### `socket.emit(eventName:string, ...args: any[])`
 
 Sends a message to the server.
-Optionally takes a callback.
 Works the same as in Socket.IO.
 
 ### `socket.fromEvent<T>(eventName: string): Observable<T>`

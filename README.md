@@ -5,10 +5,11 @@
 
 [Socket.IO](http://socket.io/) module for Angular
 
-**Important:** make sure you're using the proper corresponding version of socket.io on the server. For ngx-socket-io 3.3+ that is socket.io 4.0.0
-
 ## Install
+
 ``` npm install ngx-socket-io ```
+
+**Important:** make sure you're using the proper corresponding version of socket.io on the server. For ngx-socket-io 3.3+ that is socket.io 4.0.0
 
 ## How to use
 

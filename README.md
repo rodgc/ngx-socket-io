@@ -1,4 +1,5 @@
 # ngx-socket-io
+
 [![Build Status](https://travis-ci.org/rodgc/ngx-socket-io.svg?branch=master)](https://travis-ci.org/rodgc/ngx-socket-io)
 [![npm version](https://badge.fury.io/js/ngx-socket-io.svg)](https://badge.fury.io/js/ngx-socket-io)
 [![npm downloads](https://img.shields.io/badge/Downloads-132%2Fmonth-brightgreen.svg)](https://github.com/rodgc/ngx-socket-io)
@@ -7,9 +8,7 @@
 
 ## Install
 
-``` npm install ngx-socket-io ```
-
-**Important:** make sure you're using the proper corresponding version of socket.io on the server. For ngx-socket-io 3.3+ that is socket.io 4.0.0
+`npm install ngx-socket-io`
 
 ## How to use
 
@@ -21,76 +20,60 @@ import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 const config: SocketIoConfig = { url: 'http://localhost:8988', options: {} };
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    SocketIoModule.forRoot(config)
-  ],
+  declarations: [AppComponent],
+  imports: [BrowserModule, SocketIoModule.forRoot(config)],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
 ```
 
-We need to configure ```SocketIoModule``` module using the object ```config``` of type ```SocketIoConfig```, this object accepts two optional properties they are the same used here [io(url[, options])](https://github.com/socketio/socket.io-client/blob/master/docs/API.md#iourl-options).
+We need to configure `SocketIoModule` module using the object `config` of type `SocketIoConfig`, this object accepts two optional properties they are the same used here [io(url[, options])](https://github.com/socketio/socket.io-client/blob/master/docs/API.md#iourl-options).
 
-Now we pass the configuration to the static method ```forRoot``` of ```SocketIoModule```
-
+Now we pass the configuration to the static method `forRoot` of `SocketIoModule`
 
 ### Using your socket Instance
 
-The ```SocketIoModule``` provides now a configured ```Socket``` service that can be injected anywhere inside the ```AppModule```.
+The `SocketIoModule` provides now a configured `Socket` service that can be injected anywhere inside the `AppModule`.
 
 ```typescript
-
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ChatService {
+  constructor(private socket: Socket) {}
 
-    constructor(private socket: Socket) { }
-
-    sendMessage(msg: string){
-        this.socket.emit("message", msg);
-    }
-     getMessage() {
-         return this.socket
-             .fromEvent("message")
-             .pipe(map((data) => data.msg));
-    }
+  sendMessage(msg: string) {
+    this.socket.emit('message', msg);
+  }
+  getMessage() {
+    return this.socket.fromEvent('message').pipe(map((data) => data.msg));
+  }
 }
-
 ```
 
 ### Using multiple sockets with different end points
 
-In this case we do not configure the ```SocketIoModule``` directly using ```forRoot```. What we have to do is: extend the ```Socket``` service, and call ```super()``` with the ```SocketIoConfig``` object type (passing ```url``` & ```options``` if any).
+In this case we do not configure the `SocketIoModule` directly using `forRoot`. What we have to do is: extend the `Socket` service, and call `super()` with the `SocketIoConfig` object type (passing `url` & `options` if any).
 
 ```typescript
-
 import { Injectable, NgModule } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 
 @Injectable()
 export class SocketOne extends Socket {
-
-    constructor() {
-        super({ url: 'http://url_one:portOne', options: {} });
-    }
-
+  constructor() {
+    super({ url: 'http://url_one:portOne', options: {} });
+  }
 }
 
 @Injectable()
 export class SocketTwo extends Socket {
-
-    constructor() {
-        super({ url: 'http://url_two:portTwo', options: {} });
-    }
-
+  constructor() {
+    super({ url: 'http://url_two:portTwo', options: {} });
+  }
 }
 
 @NgModule({
@@ -102,20 +85,20 @@ export class SocketTwo extends Socket {
     //...
   ],
   providers: [SocketOne, SocketTwo],
-  bootstrap: [/** AppComponent **/]
+  bootstrap: [
+    /** AppComponent **/
+  ],
 })
-export class AppModule { }
-
+export class AppModule {}
 ```
 
-Now you can inject ```SocketOne```, ```SocketTwo``` in any other services and / or components.
-
+Now you can inject `SocketOne`, `SocketTwo` in any other services and / or components.
 
 ## API
 
 Most of the functionalities here you are already familiar with.
 
-The only addition is the ```fromEvent``` method, which returns an ```Observable``` that you can subscribe to.
+The only addition is the `fromEvent` method, which returns an `Observable` that you can subscribe to.
 
 ### `socket.of(namespace: string)`
 
@@ -151,7 +134,7 @@ Takes an event name and returns an Observable that you can subscribe to.
 Creates a Promise for a one-time event.
 
 You should keep a reference to the Observable subscription and unsubscribe when you're done with it.
-This prevents memory leaks as the event listener attached will be removed (using ```socket.removeListener```) ONLY and when/if you unsubscribe.
+This prevents memory leaks as the event listener attached will be removed (using `socket.removeListener`) ONLY and when/if you unsubscribe.
 
 If you have multiple subscriptions to an Observable only the last unsubscription will remove the listener.
 
@@ -178,4 +161,3 @@ For `error TS2345` you need to add this to your `tsconfig.json`.
 ## LICENSE
 
 MIT
-

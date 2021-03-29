@@ -21,8 +21,6 @@ Make sure you're using the proper corresponding version of socket.io on the serv
 | v3.3.1           | v2.2.0         |
 | v4.0.0           | v4.0.0         |
 
-For ngx-socket-io 3.3+ that is socket.io 4.0.0
-
 ## How to use
 
 ### Import and configure SocketIoModule

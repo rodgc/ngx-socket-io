@@ -1,11 +1,12 @@
 /** Config interface */
 export interface SocketIoConfig {
-    url: string;/**
+  url: string;
+  /**
    * Options
    * References:
    * https://github.com/socketio/socket.io-client/blob/master/docs/API.md#new-managerurl-options
    */
-    options?: {
+  options?: {
     /**
      * Name of the path that is captured on the server side. Default: /socket.io
      */

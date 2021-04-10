@@ -1,5 +1,5 @@
 /** Config interface */
 export interface SocketIoConfig {
     url: string;
-    options?: any;
+    options?: {[key: string]: any};
 }

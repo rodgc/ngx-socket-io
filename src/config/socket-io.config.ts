@@ -93,7 +93,7 @@ export interface SocketIoConfig {
     /**
      * Hash of options, indexed by transport name, overriding the common options for the given transport. Default: {}
      */
-    transportOptions?: any; // TODO investigate
+    transportOptions?: any;
     /**
      * If true and if the previous websocket connection to the server succeeded, the connection attempt will bypass the normal upgrade process and will initially try websocket. A connection attempt following a transport error will use the normal upgrade process. It is recommended you turn this on only when using SSL/TLS connections, or if you know that your network does not block websockets. Default: false.
      */

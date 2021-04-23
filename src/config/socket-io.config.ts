@@ -44,7 +44,7 @@ export interface SocketIoConfig {
     /**
      * Additional query parameters that are sent when connecting a namespace (then found in socket.handshake.query object on the server-side)
      */
-    query: {
+    query?: {
       [key: string]: string | null;
     };
     /**
@@ -112,5 +112,5 @@ export interface SocketIoConfig {
     protocols?: any;
 
     // Additional options for NodeJS Engine.IO clients omitted: https://socket.io/docs/client-api/
-  }
+  };
 }

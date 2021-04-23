@@ -39,7 +39,7 @@ const config: SocketIoConfig = { url: 'http://localhost:8988', options: {} };
 export class AppModule {}
 ```
 
-We need to configure `SocketIoModule` module using the object `config` of type `SocketIoConfig`, this object accepts two optional properties they are the same used here [io(url[, options])](https://github.com/socketio/socket.io-client/blob/master/docs/API.md#iourl-options).
+We need to configure `SocketIoModule` module using the object `config` of type `SocketIoConfig`, this object accepts two optional properties they are the same used here [io(url[, options])](https://socket.io/docs/v4/client-initialization/#Options).
 
 Now we pass the configuration to the static method `forRoot` of `SocketIoModule`
 

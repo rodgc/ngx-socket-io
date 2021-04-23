@@ -1,16 +1,16 @@
-import { Observable } from "rxjs";
-import { share } from "rxjs/operators";
+import { Observable } from 'rxjs';
+import { share } from 'rxjs/operators';
 
-import * as io from "socket.io-client";
+import * as io from 'socket.io-client';
 
-import { SocketIoConfig } from "./config/socket-io.config";
+import { SocketIoConfig } from './config/socket-io.config';
 
 export class WrappedSocket {
   subscribersCounter: Record<string, number> = {};
   eventObservables$: Record<string, Observable<any>> = {};
   ioSocket: any;
   emptyConfig: SocketIoConfig = {
-    url: "",
+    url: '',
     options: {},
   };
 
@@ -81,6 +81,6 @@ export class WrappedSocket {
   }
 
   fromOneTimeEvent<T>(eventName: string): Promise<T> {
-    return new Promise<T>((resolve) => this.once(eventName, resolve));
+    return new Promise<T>(resolve => this.once(eventName, resolve));
   }
 }

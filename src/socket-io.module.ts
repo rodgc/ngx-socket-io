@@ -1,6 +1,6 @@
-import { NgModule, ModuleWithProviders, InjectionToken } from "@angular/core";
-import { SocketIoConfig } from "./config/socket-io.config";
-import { WrappedSocket } from "./socket-io.service";
+import { NgModule, ModuleWithProviders, InjectionToken } from '@angular/core';
+import { SocketIoConfig } from './config/socket-io.config';
+import { WrappedSocket } from './socket-io.service';
 
 /** Socket factory */
 export function SocketFactory(config: SocketIoConfig) {
@@ -8,7 +8,7 @@ export function SocketFactory(config: SocketIoConfig) {
 }
 
 export const SOCKET_CONFIG_TOKEN = new InjectionToken<SocketIoConfig>(
-  "__SOCKET_IO_CONFIG__"
+  '__SOCKET_IO_CONFIG__'
 );
 
 @NgModule({})

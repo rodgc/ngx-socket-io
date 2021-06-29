@@ -14,12 +14,10 @@
 
 Make sure you're using the proper corresponding version of socket.io on the server.
 
-| Package Version  | Server Version |
-| ---------------- | -------------- |
-| v1.0.6 -> v3.2.0 | v2.2.0         |
-| v3.3.0           | v4.0.0         |
-| v3.3.1           | v2.2.0         |
-| v4.0.0           | v4.0.0         |
+| Package Version  | Socket-io Server Version |
+| ---------------- | ------------------------ |
+| v3.4.0           | v2.2.0                   |
+| v4.0.0           | v4.0.0                   |
 
 ## How to use
 

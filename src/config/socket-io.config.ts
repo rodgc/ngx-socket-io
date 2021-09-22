@@ -110,6 +110,10 @@ export interface SocketIoConfig {
      * A list of subprotocols. See https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers#Subprotocols
      */
     protocols?: any;
+    /**
+     * Credentials that are sent when accessing a namespace. Default: not present
+     */
+    auth?:any;
 
     // Additional options for NodeJS Engine.IO clients omitted: https://socket.io/docs/client-api/
   };

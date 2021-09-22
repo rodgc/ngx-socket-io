@@ -113,7 +113,7 @@ export interface SocketIoConfig {
     /**
      * Credentials that are sent when accessing a namespace. Default: not present
      */
-    auth?:any;
+    auth?: any;
 
     // Additional options for NodeJS Engine.IO clients omitted: https://socket.io/docs/client-api/
   };

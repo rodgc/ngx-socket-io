@@ -113,7 +113,7 @@ export interface SocketIoConfig {
     /**
      * Additional headers (then found in socket.handshake.headers object on the server-side). Default value: -
      */
-    headers?: {
+    extraHeaders?: {
       [header: string]: string;
     };
     

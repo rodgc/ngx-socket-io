@@ -110,7 +110,13 @@ export interface SocketIoConfig {
      * A list of subprotocols. See https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers#Subprotocols
      */
     protocols?: any;
-
+    /**
+     * Additional headers (then found in socket.handshake.headers object on the server-side). Default value: -
+     */
+    headers?: {
+      [header: string]: string;
+    };
+    
     // Additional options for NodeJS Engine.IO clients omitted: https://socket.io/docs/client-api/
   };
 }

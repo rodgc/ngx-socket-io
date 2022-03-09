@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.2.0] - 2021-10-22
+
+### Update
+
+- Bump `@angular` dependencies to v13.0.0.
+
+### Fixed
+
+- Property `withCredentials` is missing in type.
+
+## [4.1.0] - 2021-6-29
+
+### Added
+
+- Husky
+
+### Update
+
+- Bump `@angular` dependencies to v12.0.0.
+
 ## [4.0.0] - 2021-3-29
 
 ### Update

@@ -113,7 +113,7 @@ export interface SocketIoConfig {
     /**
      * Whether or not cross-site requests should made using credentials such as cookies, authorization headers or TLS client certificates. Setting withCredentials has no effect on same-site requests. Default value: false
      */
-    withCredentials: boolean;
+    withCredentials?: boolean;
     /**
      * Additional headers (then found in socket.handshake.headers object on the server-side). Default value: -
      */

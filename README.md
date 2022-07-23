@@ -140,7 +140,7 @@ Works the same as in Socket.IO.
 
 Takes an event name and returns an Observable that you can subscribe to.
 
-### `socket.fromEventOnce<T>(eventName: string): Promise<T>`
+### `socket.fromOneTimeEvent<T>(eventName: string): Promise<T>`
 
 Creates a Promise for a one-time event.
 

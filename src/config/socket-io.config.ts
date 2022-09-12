@@ -111,7 +111,11 @@ export interface SocketIoConfig {
      */
     protocols?: any;
     /**
-     * Whether or not cross-site requests should made using credentials such as cookies, authorization headers or TLS client certificates. Setting withCredentials has no effect on same-site requests. Default value: false
+     * Credentials that are sent when accessing a namespace. Default: not present
+     */
+    auth?: { [key: string]: any } | ((cb: (data: object) => void) => void);
+    /**
+     * Whether cross-site requests should be made using credentials such as cookies, authorization headers or TLS client certificates. Setting withCredentials has no effect on same-site requests. Default value: false
      */
     withCredentials?: boolean;
     /**

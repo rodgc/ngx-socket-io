@@ -124,6 +124,11 @@ export interface SocketIoConfig {
     extraHeaders?: {
       [header: string]: string;
     };
+
+    /**
+     * decide whether to trigger disconnect event when reloading the page or not
+     * */
+    closeOnBeforeunload?: boolean;
     
     // Additional options for NodeJS Engine.IO clients omitted: https://socket.io/docs/client-api/
   };

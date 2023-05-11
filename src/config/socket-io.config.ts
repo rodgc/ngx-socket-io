@@ -129,11 +129,11 @@ export interface SocketIoConfig {
      * decide whether to trigger disconnect event when reloading the page or not
      * */
     closeOnBeforeunload?: boolean;
-    
+
     /**
      * Whether to create a new Manager instance. Default value: false
      */
-    forceNew ?: boolean;
+    forceNew?: boolean;
 
     // Additional options for NodeJS Engine.IO clients omitted: https://socket.io/docs/client-api/
   };

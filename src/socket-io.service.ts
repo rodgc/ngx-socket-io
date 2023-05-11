@@ -83,4 +83,57 @@ export class WrappedSocket {
   fromOneTimeEvent<T>(eventName: string): Promise<T> {
     return new Promise<T>(resolve => this.once(eventName, resolve));
   }
+
+  listeners(eventName: string) {
+    return this.ioSocket.listeners(eventName);
+  }
+
+  listenersAny() {
+    return this.ioSocket.listenersAny();
+  }
+
+  listenersAnyOutgoing() {
+    return this.ioSocket.listenersAnyOutgoing();
+  }
+
+  off(eventName?: string, listener?: Function[]) {
+    if (!eventName) {
+      // Remove all listeners for all events
+      return this.ioSocket.offAny();
+    }
+
+    if (eventName && !listener) {
+      // Remove all listeners for that event
+      return this.ioSocket.off(eventName);
+    }
+
+    // Removes the specified listener from the listener array for the event named
+    return this.ioSocket.off(eventName, listener);
+  }
+
+  onAny(callback: (event: string, ...args: any[]) => void) {
+    return this.ioSocket.onAny(callback);
+  }
+
+  onAnyOutgoing(callback: (event: string, ...args: any[]) => void) {
+    return this.ioSocket.onAnyOutgoing(callback);
+  }
+
+  prependAny(callback: (event: string, ...args: any[]) => void) {
+    return this.ioSocket.prependAny(callback);
+  }
+
+  prependAnyOutgoing(
+    callback: (event: string | symbol, ...args: any[]) => void
+  ) {
+    return this.ioSocket.prependAnyOutgoing(callback);
+  }
+
+  timeout(value: number) {
+    return this.ioSocket.timeout(value);
+  }
+
+  volatile() {
+    return this.ioSocket.volatile;
+  }
 }

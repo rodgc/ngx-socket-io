@@ -36,8 +36,8 @@ export class WrappedSocket {
     this.ioSocket.once(eventName, callback);
   }
 
-  connect() {
-    return this.ioSocket.connect();
+  connect(callback?: (err: any) => void) {
+    return this.ioSocket.connect(callback);
   }
 
   disconnect(_close?: any) {

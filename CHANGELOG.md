@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.6.0] - 2023-11-08
+
+### Added
+
+- Optional callback to `ioSocket.connect` method.
+
+### Update
+
+- Bump `@angular` dependencies to v17.0.0.
+- Bump `ng-packagr` dependencies to v17.0.0.
+- Bump `postcss` dependencies to 8.4.31.
+- Bump `zone.js` dependencies to 0.13.0.
+- Bump `socket.io` dependencies to 4.7.2.
+- Bump `socket.io-client` dependencies to 4.7.2.
+- Bump `socket.io-client` dependencies to 4.7.2.
+- Bump `@types/socket.io` dependencies to 2.1.13.
+- Bump `@types/socket.io-client` dependencies to 1.4.36.
+
 ## [4.5.1] - 2023-05-11
 
 ### Added

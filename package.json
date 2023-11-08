@@ -26,24 +26,24 @@
   "dependencies": {
     "core-js": "^3.0.0",
     "reflect-metadata": "^0.1.10",
-    "socket.io": "^4.5.1",
-    "socket.io-client": "^4.5.1",
-    "zone.js": "~0.11.4"
+    "socket.io": "^4.7.2",
+    "socket.io-client": "^4.7.2",
+    "zone.js": "~0.13.0"
   },
   "peerDependencies": {
-    "@angular/common": "^16.0.0",
-    "@angular/core": "^16.0.0",
+    "@angular/common": "17.0.0",
+    "@angular/core": "17.0.0",
     "rxjs": "^7.0.0"
   },
   "devDependencies": {
-    "@angular/compiler": "^16.0.0",
-    "@angular/compiler-cli": "^16.0.0",
-    "@angular/core": "^16.0.0",
+    "@angular/compiler": "17.0.0",
+    "@angular/compiler-cli": "17.0.0",
+    "@angular/core": "17.0.0",
     "@types/node": "^12.7.1",
-    "@types/socket.io": "^2.1.2",
-    "@types/socket.io-client": "^1.4.32",
+    "@types/socket.io": "^2.1.13",
+    "@types/socket.io-client": "^1.4.36",
     "husky": "^6.0.0",
-    "ng-packagr": "^16.0.0",
+    "ng-packagr": "17.0.0",
     "prettier": "^2.2.1",
     "rxjs": "^7.0.0",
     "tslint": "^5.18.0",

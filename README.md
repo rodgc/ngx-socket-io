@@ -15,13 +15,14 @@
 Make sure you're using the proper corresponding version of socket.io on the server.
 
 | Package Version | Socket-io Server Version | Angular version |
-|-----------------|--------------------------|-----------------|
+| --------------- | ------------------------ | --------------- |
 | v3.4.0          | v2.2.0                   |                 |
 | v4.1.0          | v4.0.0                   | 12.x            |
 | v4.2.0          | v4.0.0                   | 13.x            |
 | v4.3.0          | v4.5.1                   | 14.x            |
 | v4.4.0          | v4.5.1                   | 15.x            |
 | v4.5.0          | v4.5.1                   | 16.x            |
+| v4.6.0          | v4.7.2                   | 17.x            |
 
 ## How to use
 
@@ -62,7 +63,7 @@ export class ChatService {
     this.socket.emit('message', msg);
   }
   getMessage() {
-    return this.socket.fromEvent('message').pipe(map((data) => data.msg));
+    return this.socket.fromEvent('message').pipe(map(data => data.msg));
   }
 }
 ```

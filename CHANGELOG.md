@@ -19,7 +19,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Bump `zone.js` dependencies to 0.14.0.
 - Bump `socket.io` dependencies to 4.7.2.
 - Bump `socket.io-client` dependencies to 4.7.2.
-- Bump `socket.io-client` dependencies to 4.7.2.
 - Bump `@types/socket.io` dependencies to 2.1.13.
 - Bump `@types/socket.io-client` dependencies to 1.4.36.
 

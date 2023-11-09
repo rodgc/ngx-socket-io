@@ -28,7 +28,7 @@
     "reflect-metadata": "^0.1.10",
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2",
-    "zone.js": "~0.13.0"
+    "zone.js": "~0.14.0"
   },
   "peerDependencies": {
     "@angular/common": "17.0.0",

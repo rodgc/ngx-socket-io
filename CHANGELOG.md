@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Bump `@angular` dependencies to v17.0.0.
 - Bump `ng-packagr` dependencies to v17.0.0.
 - Bump `postcss` dependencies to 8.4.31.
-- Bump `zone.js` dependencies to 0.13.0.
+- Bump `zone.js` dependencies to 0.14.0.
 - Bump `socket.io` dependencies to 4.7.2.
 - Bump `socket.io-client` dependencies to 4.7.2.
 - Bump `socket.io-client` dependencies to 4.7.2.

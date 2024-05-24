@@ -23,6 +23,7 @@ Make sure you're using the proper corresponding version of socket.io on the serv
 | v4.4.0          | v4.5.1                   | 15.x            |
 | v4.5.0          | v4.5.1                   | 16.x            |
 | v4.6.0          | v4.7.2                   | 17.x            |
+| v4.7.0          | v4.7.2                   | 18.x            |
 
 ## How to use
 

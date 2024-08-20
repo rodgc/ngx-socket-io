@@ -31,19 +31,19 @@
     "zone.js": "~0.14.0"
   },
   "peerDependencies": {
-    "@angular/common": "^18.0.0",
-    "@angular/core": "^18.0.0",
+    "@angular/common": "^17.3.12",
+    "@angular/core": "^17.3.12",
     "rxjs": "^7.0.0"
   },
   "devDependencies": {
-    "@angular/compiler": "^18.0.0",
-    "@angular/compiler-cli": "^18.0.0",
-    "@angular/core": "^18.0.0",
+    "@angular/compiler": "^17.3.12",
+    "@angular/compiler-cli": "^17.3.12",
+    "@angular/core": "^17.3.12",
     "@types/node": "^12.7.1",
     "@types/socket.io": "^2.1.13",
     "@types/socket.io-client": "^1.4.36",
     "husky": "^6.0.0",
-    "ng-packagr": "^18.0.0",
+    "ng-packagr": "^17.0.0",
     "prettier": "^2.2.1",
     "rxjs": "^7.0.0",
     "tslint": "^5.18.0",

@@ -48,6 +48,9 @@ We need to configure `SocketIoModule` module using the object `config` of type `
 Now we pass the configuration to the static method `forRoot` of `SocketIoModule`
 
 ### Import and configure SocketIoModule for standalone based applications
+
+In app.config.ts use the following:
+
 ```ts
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';

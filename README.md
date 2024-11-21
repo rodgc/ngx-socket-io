@@ -15,7 +15,7 @@
 Make sure you're using the proper corresponding version of socket.io on the server.
 
 | Package Version | Socket-io Server Version | Angular version |
-| --------------- | ------------------------ | --------------- |
+|-----------------|--------------------------|-----------------|
 | v3.4.0          | v2.2.0                   |                 |
 | v4.1.0          | v4.0.0                   | 12.x            |
 | v4.2.0          | v4.0.0                   | 13.x            |
@@ -24,6 +24,7 @@ Make sure you're using the proper corresponding version of socket.io on the serv
 | v4.5.0          | v4.5.1                   | 16.x            |
 | v4.6.1          | v4.7.2                   | 17.x            |
 | v4.7.0          | v4.7.2                   | 18.x            |
+| v4.8.0          | v4.8.1                   | 19.x            |
 
 ## How to use
 

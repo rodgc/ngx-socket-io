@@ -1,12 +1,12 @@
 {
   "name": "ngx-socket-io",
-  "version": "4.7.0",
+  "version": "4.8.0",
   "description": "Socket.IO module for Angular",
   "main": "index.ts",
   "scripts": {
     "build": "ng-packagr",
     "format": "prettier --write src",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
@@ -24,29 +24,29 @@
   },
   "homepage": "https://github.com/rodgc/ngx-socket-io#readme",
   "dependencies": {
-    "core-js": "^3.0.0",
-    "reflect-metadata": "^0.1.10",
-    "socket.io": "^4.7.2",
-    "socket.io-client": "^4.7.2",
-    "zone.js": "~0.14.0"
+    "core-js": "^3.39.0",
+    "reflect-metadata": "^0.2.2",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "zone.js": "~0.15.0"
   },
   "peerDependencies": {
-    "@angular/common": "^18.0.0",
+    "@angular/common": "^19.0.0",
     "@angular/core": "^18.0.0",
     "rxjs": "^7.0.0"
   },
   "devDependencies": {
-    "@angular/compiler": "^18.0.0",
-    "@angular/compiler-cli": "^18.0.0",
-    "@angular/core": "^18.0.0",
-    "@types/node": "^12.7.1",
-    "@types/socket.io": "^2.1.13",
+    "@angular/compiler": "^19.0.0",
+    "@angular/compiler-cli": "^19.0.0",
+    "@angular/core": "^19.0.0",
+    "@types/node": "^22.9.1",
+    "@types/socket.io": "^3.0.1",
     "@types/socket.io-client": "^1.4.36",
-    "husky": "^6.0.0",
-    "ng-packagr": "^18.0.0",
-    "prettier": "^2.2.1",
-    "rxjs": "^7.0.0",
-    "tslint": "^5.18.0",
-    "typescript": "^5.4.0"
+    "husky": "^9.1.7",
+    "ng-packagr": "^19.0.0",
+    "prettier": "^3.3.3",
+    "rxjs": "^7.8.1",
+    "tslint": "^5.20.1",
+    "typescript": "^5.6.3"
   }
 }

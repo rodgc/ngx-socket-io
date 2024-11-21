@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [4.8.0] - 2024-11-21
 
+### Update
+
 - Bump `@angular` dependencies to v19.0.0.
 
 ## [4.7.0] - 2024-05-24

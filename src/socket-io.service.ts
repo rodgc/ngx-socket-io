@@ -82,6 +82,11 @@ export class WrappedSocket {
     return this;
   }
 
+  send(..._args: any[]): this {
+    this.ioSocket.send.apply(this.ioSocket, arguments);
+    return this;
+  }
+
   emitWithAck<T>(_eventName: string, ..._args: any[]): Promise<T> {
     return this.ioSocket.emitWithAck.apply(this.ioSocket, arguments);
   }

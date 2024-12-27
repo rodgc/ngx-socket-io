@@ -57,32 +57,39 @@ export class WrappedSocket {
     return created;
   }
 
-  on(eventName: string, callback: Function) {
+  on(eventName: string, callback: Function): this {
     this.ioSocket.on(eventName, callback);
+    return this;
   }
 
-  once(eventName: string, callback: Function) {
+  once(eventName: string, callback: Function): this {
     this.ioSocket.once(eventName, callback);
+    return this;
   }
 
-  connect(callback?: (err: any) => void) {
-    return this.ioSocket.connect(callback);
+  connect(callback?: (err: any) => void): this {
+    this.ioSocket.connect(callback);
+    return this;
   }
 
-  disconnect(_close?: any) {
-    return this.ioSocket.disconnect.apply(this.ioSocket, arguments);
+  disconnect(_close?: any): this {
+    this.ioSocket.disconnect.apply(this.ioSocket, arguments);
+    return this;
   }
 
-  emit(_eventName: string, ..._args: any[]) {
-    return this.ioSocket.emit.apply(this.ioSocket, arguments);
+  emit(_eventName: string, ..._args: any[]): this {
+    this.ioSocket.emit.apply(this.ioSocket, arguments);
+    return this;
   }
 
-  removeListener(_eventName: string, _callback?: Function) {
-    return this.ioSocket.removeListener.apply(this.ioSocket, arguments);
+  removeListener(_eventName: string, _callback?: Function): this {
+    this.ioSocket.removeListener.apply(this.ioSocket, arguments);
+    return this;
   }
 
-  removeAllListeners(_eventName?: string) {
-    return this.ioSocket.removeAllListeners.apply(this.ioSocket, arguments);
+  removeAllListeners(_eventName?: string): this {
+    this.ioSocket.removeAllListeners.apply(this.ioSocket, arguments);
+    return this;
   }
 
   fromEvent<T>(eventName: string): Observable<T> {
@@ -125,41 +132,49 @@ export class WrappedSocket {
     return this.ioSocket.listenersAnyOutgoing();
   }
 
-  off(eventName?: string, listener?: Function[]) {
+  off(eventName?: string, listener?: Function[]): this {
     if (!eventName) {
       // Remove all listeners for all events
-      return this.ioSocket.offAny();
+      this.ioSocket.offAny();
+      return this;
     }
 
     if (eventName && !listener) {
       // Remove all listeners for that event
-      return this.ioSocket.off(eventName);
+      this.ioSocket.off(eventName);
+      return this;
     }
 
     // Removes the specified listener from the listener array for the event named
-    return this.ioSocket.off(eventName, listener);
+    this.ioSocket.off(eventName, listener);
+    return this;
   }
 
-  onAny(callback: (event: string, ...args: any[]) => void) {
-    return this.ioSocket.onAny(callback);
+  onAny(callback: (event: string, ...args: any[]) => void): this {
+    this.ioSocket.onAny(callback);
+    return this;
   }
 
-  onAnyOutgoing(callback: (event: string, ...args: any[]) => void) {
-    return this.ioSocket.onAnyOutgoing(callback);
+  onAnyOutgoing(callback: (event: string, ...args: any[]) => void): this {
+    this.ioSocket.onAnyOutgoing(callback);
+    return this;
   }
 
-  prependAny(callback: (event: string, ...args: any[]) => void) {
-    return this.ioSocket.prependAny(callback);
+  prependAny(callback: (event: string, ...args: any[]) => void): this {
+    this.ioSocket.prependAny(callback);
+    return this;
   }
 
   prependAnyOutgoing(
     callback: (event: string | symbol, ...args: any[]) => void
-  ) {
-    return this.ioSocket.prependAnyOutgoing(callback);
+  ): this {
+    this.ioSocket.prependAnyOutgoing(callback);
+    return this;
   }
 
-  timeout(value: number) {
-    return this.ioSocket.timeout(value);
+  timeout(value: number): this {
+    this.ioSocket.timeout(value);
+    return this;
   }
 
   volatile() {

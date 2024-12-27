@@ -202,4 +202,9 @@ export class WrappedSocket {
     const _ = this.ioSocket.volatile;
     return this;
   }
+
+  compress(value: boolean): this {
+    this.ioSocket.compress(value);
+    return this;
+  }
 }

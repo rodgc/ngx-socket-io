@@ -1,6 +1,6 @@
 {
   "name": "ngx-socket-io",
-  "version": "4.8.1",
+  "version": "4.8.2",
   "description": "Socket.IO module for Angular",
   "main": "index.ts",
   "scripts": {

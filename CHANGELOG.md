@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.8.2] - 2024-12-27
+
+### Added
+
+- Return types to help users.
+- emitWithAck().
+- offAny().
+- offAnyOutgoing().
+- send().
+- compress().
+- export SOCKET_CONFIG_TOKEN.
+
+### Fixed
+
+- socket.of() method.
+- Chaining methods.
+- Volatile usage.
+- connect() and disconnect() arguments.
+
 ## [4.8.1] - 2024-11-25
 
 ### Update

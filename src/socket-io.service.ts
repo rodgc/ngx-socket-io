@@ -67,13 +67,13 @@ export class WrappedSocket {
     return this;
   }
 
-  connect(callback?: (err: any) => void): this {
-    this.ioSocket.connect(callback);
+  connect(): this {
+    this.ioSocket.connect();
     return this;
   }
 
-  disconnect(_close?: any): this {
-    this.ioSocket.disconnect.apply(this.ioSocket, arguments);
+  disconnect(): this {
+    this.ioSocket.disconnect();
     return this;
   }
 

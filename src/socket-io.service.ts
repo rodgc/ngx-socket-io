@@ -82,6 +82,10 @@ export class WrappedSocket {
     return this;
   }
 
+  emitWithAck<T>(_eventName: string, ..._args: any[]): Promise<T> {
+    return this.ioSocket.emitWithAck.apply(this.ioSocket, arguments);
+  }
+
   removeListener(_eventName: string, _callback?: Function): this {
     this.ioSocket.removeListener.apply(this.ioSocket, arguments);
     return this;

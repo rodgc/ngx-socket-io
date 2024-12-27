@@ -203,6 +203,26 @@ export class WrappedSocket {
     return this;
   }
 
+  get active(): boolean {
+    return this.ioSocket.active;
+  }
+
+  get connected(): boolean {
+    return this.ioSocket.connected;
+  }
+
+  get disconnected(): boolean {
+    return this.ioSocket.disconnected;
+  }
+
+  get recovered(): boolean {
+    return this.ioSocket.recovered;
+  }
+
+  get id(): string {
+    return this.ioSocket.id;
+  }
+
   compress(value: boolean): this {
     this.ioSocket.compress(value);
     return this;

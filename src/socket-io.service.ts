@@ -120,15 +120,15 @@ export class WrappedSocket {
     return new Promise<T>(resolve => this.once(eventName, resolve));
   }
 
-  listeners(eventName: string) {
+  listeners(eventName: string): Function[] {
     return this.ioSocket.listeners(eventName);
   }
 
-  listenersAny() {
+  listenersAny(): Function[] {
     return this.ioSocket.listenersAny();
   }
 
-  listenersAnyOutgoing() {
+  listenersAnyOutgoing(): Function[] {
     return this.ioSocket.listenersAnyOutgoing();
   }
 

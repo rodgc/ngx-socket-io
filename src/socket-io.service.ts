@@ -154,6 +154,16 @@ export class WrappedSocket {
     return this;
   }
 
+  offAny(callback?: (event: string, ...args: any[]) => void): this {
+    this.ioSocket.offAny(callback);
+    return this;
+  }
+
+  offAnyOutgoing(callback?: (event: string, ...args: any[]) => void): this {
+    this.ioSocket.offAnyOutgoing(callback);
+    return this;
+  }
+
   onAny(callback: (event: string, ...args: any[]) => void): this {
     this.ioSocket.onAny(callback);
     return this;

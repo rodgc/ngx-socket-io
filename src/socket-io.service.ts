@@ -8,6 +8,7 @@ import { SocketIoConfig } from './config/socket-io.config';
 export class WrappedSocket {
   subscribersCounter: Record<string, number> = {};
   eventObservables$: Record<string, Observable<any>> = {};
+  namespaces: Record<string, WrappedSocket> = {};
   ioSocket: any;
   emptyConfig: SocketIoConfig = {
     url: '',
@@ -24,8 +25,36 @@ export class WrappedSocket {
     this.ioSocket = ioFunc(url, options);
   }
 
-  of(namespace: string) {
-    this.ioSocket.of(namespace);
+  /**
+   * Gets a WrappedSocket for the given namespace.
+   *
+   * @note if an existing socket exists for the given namespace, it will be reused.
+   *
+   * @param namespace the namespace to create a new socket based on the current config.
+   *        If empty or `/`, then the current instance is returned.
+   * @returns a socket that is bound to the given namespace. If namespace is empty or `/`,
+   *          then `this` is returned, otherwise another instance is returned, creating
+   *          it if it's the first use of such namespace.
+   */
+  of(namespace: string): WrappedSocket {
+    if (!namespace || namespace === '/') {
+      return this;
+    }
+    const existing = this.namespaces[namespace];
+    if (existing) {
+      return existing;
+    }
+    const { url, ...rest } = this.config;
+    const config = {
+      url:
+        !url.endsWith('/') && !namespace.startsWith('/')
+          ? `${url}/${namespace}`
+          : `${url}${namespace}`,
+      ...rest,
+    };
+    const created = new WrappedSocket(config);
+    this.namespaces[namespace] = created;
+    return created;
   }
 
   on(eventName: string, callback: Function) {

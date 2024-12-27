@@ -135,8 +135,10 @@ The only addition is the `fromEvent` method, which returns an `Observable` that 
 
 ### `socket.of(namespace: string)`
 
-Takes an namespace.
-Works the same as in Socket.IO.
+Takes a namespace and returns an instance based on the current config and the given namespace,
+that is added to the end of the current url.
+See [Namespaces - Client Initialization](https://socket.io/docs/v4/namespaces/#client-initialization).
+Instances are reused based on the namespace.
 
 ### `socket.on(eventName: string, callback: Function)`
 

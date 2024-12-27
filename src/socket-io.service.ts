@@ -177,7 +177,10 @@ export class WrappedSocket {
     return this;
   }
 
-  volatile() {
-    return this.ioSocket.volatile;
+  get volatile(): this {
+    // this getter has a side-effect of turning the socket instance true,
+    // but it returns the actual instance, so we need to get the value to force the side effect
+    const _ = this.ioSocket.volatile;
+    return this;
   }
 }

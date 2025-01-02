@@ -1,15 +1,65 @@
 import { Observable } from 'rxjs';
 import { share } from 'rxjs/operators';
 
-import * as io from 'socket.io-client';
+import * as ioModule from 'socket.io-client';
+import type { io, Socket } from 'socket.io-client';
+import type {
+  ReservedOrUserListener,
+  ReservedOrUserEventNames,
+  DefaultEventsMap,
+} from '@socket.io/component-emitter';
+
+export type IoSocket = Socket;
+// This is not exported in the original, but let's export as helpers for those declaring disconnect handlers
+export type DisconnectDescription =
+  | Error
+  | {
+      description: string;
+      context?: unknown;
+    };
+
+// Not exported but needed to properly map ReservedEvents to their signatures
+interface SocketReservedEvents {
+  connect: () => void;
+  connect_error: (err: Error) => void;
+  disconnect: (
+    reason: Socket.DisconnectReason,
+    description?: DisconnectDescription
+  ) => void;
+}
+
+type EventNames = ReservedOrUserEventNames<
+  SocketReservedEvents,
+  DefaultEventsMap
+>;
+type EventListener<Ev extends EventNames> = ReservedOrUserListener<
+  SocketReservedEvents,
+  DefaultEventsMap,
+  Ev
+>;
+type EventParameters<Ev extends EventNames> = Parameters<EventListener<Ev>>;
+type EventPayload<Ev extends EventNames> =
+  EventParameters<Ev> extends [] ? undefined : EventParameters<Ev>[0];
+
+type IgnoredWrapperEvents = 'receiveBuffer' | 'sendBuffer';
+
+type WrappedSocketIface<Wrapper> = {
+  [K in Exclude<keyof IoSocket, IgnoredWrapperEvents>]: IoSocket[K] extends (
+    ...args: any[]
+  ) => IoSocket
+    ? (...args: Parameters<IoSocket[K]>) => Wrapper // chainable methods on().off().emit()...
+    : IoSocket[K] extends IoSocket
+      ? Wrapper // ie: volatile is a getter
+      : IoSocket[K];
+};
 
 import { SocketIoConfig } from './config/socket-io.config';
 
-export class WrappedSocket {
+export class WrappedSocket implements WrappedSocketIface<WrappedSocket> {
   subscribersCounter: Record<string, number> = {};
   eventObservables$: Record<string, Observable<any>> = {};
   namespaces: Record<string, WrappedSocket> = {};
-  ioSocket: any;
+  ioSocket: IoSocket;
   emptyConfig: SocketIoConfig = {
     url: '',
     options: {},
@@ -21,8 +71,33 @@ export class WrappedSocket {
     }
     const url: string = config.url;
     const options: any = config.options;
-    const ioFunc = (io as any).default ? (io as any).default : io;
+    const ioFunc = (
+      (ioModule as any).default ? (ioModule as any).default : ioModule
+    ) as typeof io;
     this.ioSocket = ioFunc(url, options);
+  }
+
+  get auth(): Socket['auth'] {
+    return this.ioSocket.auth;
+  }
+
+  set auth(value: Socket['auth']) {
+    this.ioSocket.auth = value;
+  }
+
+  /** readonly access to io manager */
+  get io(): Socket['io'] {
+    return this.ioSocket.io;
+  }
+
+  /** alias to connect */
+  get open(): WrappedSocket['connect'] {
+    return this.connect;
+  }
+
+  /** alias to disconnect */
+  get close(): WrappedSocket['disconnect'] {
+    return this.disconnect;
   }
 
   /**
@@ -57,12 +132,15 @@ export class WrappedSocket {
     return created;
   }
 
-  on(eventName: string, callback: Function): this {
+  on<Ev extends EventNames>(eventName: Ev, callback: EventListener<Ev>): this {
     this.ioSocket.on(eventName, callback);
     return this;
   }
 
-  once(eventName: string, callback: Function): this {
+  once<Ev extends EventNames>(
+    eventName: Ev,
+    callback: EventListener<Ev>
+  ): this {
     this.ioSocket.once(eventName, callback);
     return this;
   }
@@ -91,17 +169,22 @@ export class WrappedSocket {
     return this.ioSocket.emitWithAck.apply(this.ioSocket, arguments);
   }
 
-  removeListener(_eventName: string, _callback?: Function): this {
+  removeListener<Ev extends EventNames>(
+    _eventName?: Ev,
+    _callback?: EventListener<Ev>
+  ): this {
     this.ioSocket.removeListener.apply(this.ioSocket, arguments);
     return this;
   }
 
-  removeAllListeners(_eventName?: string): this {
+  removeAllListeners<Ev extends EventNames>(_eventName?: Ev): this {
     this.ioSocket.removeAllListeners.apply(this.ioSocket, arguments);
     return this;
   }
 
-  fromEvent<T>(eventName: string): Observable<T> {
+  fromEvent<T extends EventPayload<Ev>, Ev extends EventNames>(
+    eventName: Ev
+  ): Observable<T> {
     if (!this.subscribersCounter[eventName]) {
       this.subscribersCounter[eventName] = 0;
     }
@@ -112,11 +195,14 @@ export class WrappedSocket {
         const listener = (data: T) => {
           observer.next(data);
         };
-        this.ioSocket.on(eventName, listener);
+        this.ioSocket.on(eventName, listener as EventListener<Ev>);
         return () => {
           this.subscribersCounter[eventName]--;
           if (this.subscribersCounter[eventName] === 0) {
-            this.ioSocket.removeListener(eventName, listener);
+            this.ioSocket.removeListener(
+              eventName,
+              listener as EventListener<Ev>
+            );
             delete this.eventObservables$[eventName];
           }
         };
@@ -125,23 +211,34 @@ export class WrappedSocket {
     return this.eventObservables$[eventName];
   }
 
-  fromOneTimeEvent<T>(eventName: string): Promise<T> {
-    return new Promise<T>(resolve => this.once(eventName, resolve));
+  fromOneTimeEvent<T extends EventPayload<Ev>, Ev extends EventNames>(
+    eventName: Ev
+  ): Promise<T> {
+    return new Promise<T>(resolve =>
+      this.once(eventName, resolve as EventListener<Ev>)
+    );
   }
 
-  listeners(eventName: string): Function[] {
+  listeners<Ev extends EventNames>(eventName: Ev): EventListener<Ev>[] {
     return this.ioSocket.listeners(eventName);
   }
 
-  listenersAny(): Function[] {
+  hasListeners<Ev extends EventNames>(eventName: Ev): boolean {
+    return this.ioSocket.hasListeners(eventName);
+  }
+
+  listenersAny(): ((...args: any[]) => void)[] {
     return this.ioSocket.listenersAny();
   }
 
-  listenersAnyOutgoing(): Function[] {
+  listenersAnyOutgoing(): ((...args: any[]) => void)[] {
     return this.ioSocket.listenersAnyOutgoing();
   }
 
-  off(eventName?: string, listener?: Function): this {
+  off<Ev extends EventNames>(
+    eventName?: Ev,
+    listener?: EventListener<Ev>
+  ): this {
     if (!eventName) {
       // Remove all listeners for all events
       this.ioSocket.offAny();
@@ -203,23 +300,23 @@ export class WrappedSocket {
     return this;
   }
 
-  get active(): boolean {
+  get active(): Socket['active'] {
     return this.ioSocket.active;
   }
 
-  get connected(): boolean {
+  get connected(): Socket['connected'] {
     return this.ioSocket.connected;
   }
 
-  get disconnected(): boolean {
+  get disconnected(): Socket['disconnected'] {
     return this.ioSocket.disconnected;
   }
 
-  get recovered(): boolean {
+  get recovered(): Socket['recovered'] {
     return this.ioSocket.recovered;
   }
 
-  get id(): string {
+  get id(): Socket['id'] {
     return this.ioSocket.id;
   }
 

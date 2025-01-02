@@ -141,7 +141,7 @@ export class WrappedSocket {
     return this.ioSocket.listenersAnyOutgoing();
   }
 
-  off(eventName?: string, listener?: Function[]): this {
+  off(eventName?: string, listener?: Function): this {
     if (!eventName) {
       // Remove all listeners for all events
       this.ioSocket.offAny();

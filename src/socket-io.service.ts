@@ -239,19 +239,6 @@ export class WrappedSocket implements WrappedSocketIface<WrappedSocket> {
     eventName?: Ev,
     listener?: EventListener<Ev>
   ): this {
-    if (!eventName) {
-      // Remove all listeners for all events
-      this.ioSocket.offAny();
-      return this;
-    }
-
-    if (eventName && !listener) {
-      // Remove all listeners for that event
-      this.ioSocket.off(eventName);
-      return this;
-    }
-
-    // Removes the specified listener from the listener array for the event named
     this.ioSocket.off(eventName, listener);
     return this;
   }

@@ -56,11 +56,11 @@ type WrappedSocketIface<Wrapper> = {
 import { SocketIoConfig } from './config/socket-io.config';
 
 export class WrappedSocket implements WrappedSocketIface<WrappedSocket> {
-  subscribersCounter: Record<string, number> = {};
-  eventObservables$: Record<string, Observable<any>> = {};
-  namespaces: Record<string, WrappedSocket> = {};
-  ioSocket: IoSocket;
-  emptyConfig: SocketIoConfig = {
+  private readonly subscribersCounter: Record<string, number> = {};
+  private readonly eventObservables$: Record<string, Observable<any>> = {};
+  private readonly namespaces: Record<string, WrappedSocket> = {};
+  readonly ioSocket: IoSocket;
+  private readonly emptyConfig: SocketIoConfig = {
     url: '',
     options: {},
   };

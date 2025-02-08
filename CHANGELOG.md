@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.8.3] - 2025-02-06
+
+### Fixed
+
+- `off()` behavior, sync with socket-io-client and takes a single function, not array
+- Mark internal fields as private in `WrappedSocket`.
+
+### Removed
+
+- Outdated `@types/socket-io` & `@types/socket.io-client` dependencies and use the built-in types instead.
+
 ## [4.8.2] - 2024-12-27
 
 ### Added

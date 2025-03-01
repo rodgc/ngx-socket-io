@@ -59,12 +59,11 @@ import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 const config: SocketIoConfig = { url: 'http://localhost:8988', options: {} };
 
 export const appConfig: ApplicationConfig = {
-  providers: [importProvidersFrom(SocketIoModule.forRoot(config))],
+  providers: [provideSocketIo(config)],
 };
 ```
 
-For standalone applications we do not have the AppModule where we can import the `SocketIoModule`. Instead we can use the `importProvidersFrom` provided by angular to provide the `SocketIoModule` to our application. The usage of the socket instance is then the same as if we used a NgModule based application.
-
+In standalone applications, there is no `AppModule` to import `SocketIoModule`. Instead, we use `provideSocketIo(config)` directly in the providers' configuration. The usage of the socket instance remains the same as in an NgModule-based application.
 ### Using your socket Instance
 
 The `SocketIoModule` provides now a configured `Socket` service that can be injected anywhere inside the `AppModule`.

@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.8.5] - 2025-04-07
+
+### Update
+
+- Providers to use `providerSocketIo` function that is using `makeEnvironmentProviders` instance of `importProvidersFrom`
+
 ## [4.8.4] - 2025-02-09
 
 ### Changed

@@ -1,4 +1,10 @@
-import { NgModule, ModuleWithProviders, InjectionToken } from '@angular/core';
+import {
+  NgModule,
+  ModuleWithProviders,
+  InjectionToken,
+  makeEnvironmentProviders,
+  EnvironmentProviders,
+} from '@angular/core';
 import { SocketIoConfig } from './config/socket-io.config';
 import { WrappedSocket } from './socket-io.service';
 
@@ -27,3 +33,16 @@ export class SocketIoModule {
     };
   }
 }
+
+export const provideSocketIo = (
+  config: SocketIoConfig
+): EnvironmentProviders => {
+  return makeEnvironmentProviders([
+    { provide: SOCKET_CONFIG_TOKEN, useValue: config },
+    {
+      provide: WrappedSocket,
+      useFactory: () => SocketFactory,
+      deps: [SOCKET_CONFIG_TOKEN],
+    },
+  ]);
+};

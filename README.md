@@ -53,8 +53,8 @@ Now we pass the configuration to the static method `forRoot` of `SocketIoModule`
 In app.config.ts use the following:
 
 ```ts
-import { ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { ApplicationConfig } from '@angular/core';
+import { SocketIoModule, SocketIoConfig, provideSocketIo } from 'ngx-socket-io';
 
 const config: SocketIoConfig = { url: 'http://localhost:8988', options: {} };
 
@@ -64,6 +64,7 @@ export const appConfig: ApplicationConfig = {
 ```
 
 In standalone applications, there is no `AppModule` to import `SocketIoModule`. Instead, we use `provideSocketIo(config)` directly in the providers' configuration. The usage of the socket instance remains the same as in an NgModule-based application.
+
 ### Using your socket Instance
 
 The `SocketIoModule` provides now a configured `Socket` service that can be injected anywhere inside the `AppModule`.

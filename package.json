@@ -41,7 +41,7 @@
     "@angular/core": "^20.0.0",
     "@types/node": "^22.9.1",
     "husky": "^9.1.7",
-    "ng-packagr": "^20.0.0",
+    "ng-packagr": "^20.0.1",
     "prettier": "^3.3.3",
     "rxjs": "^7.8.1",
     "tslint": "^5.20.1",

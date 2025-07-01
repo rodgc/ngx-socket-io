@@ -41,7 +41,7 @@ export const provideSocketIo = (
     { provide: SOCKET_CONFIG_TOKEN, useValue: config },
     {
       provide: WrappedSocket,
-      useFactory: () => SocketFactory,
+      useFactory: SocketFactory,
       deps: [SOCKET_CONFIG_TOKEN],
     },
   ]);

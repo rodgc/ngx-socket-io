@@ -54,6 +54,7 @@ type WrappedSocketIface<Wrapper> = {
 };
 
 import { SocketIoConfig } from './config/socket-io.config';
+import { ApplicationRef } from '@angular/core';
 
 export class WrappedSocket implements WrappedSocketIface<WrappedSocket> {
   private readonly subscribersCounter: Record<string, number> = {};
@@ -65,7 +66,10 @@ export class WrappedSocket implements WrappedSocketIface<WrappedSocket> {
     options: {},
   };
 
-  constructor(private config: SocketIoConfig) {
+  constructor(
+    private config: SocketIoConfig,
+    private appRef: ApplicationRef
+  ) {
     if (config === undefined) {
       config = this.emptyConfig;
     }
@@ -127,7 +131,7 @@ export class WrappedSocket implements WrappedSocketIface<WrappedSocket> {
           : `${url}${namespace}`,
       ...rest,
     };
-    const created = new WrappedSocket(config);
+    const created = new WrappedSocket(config, this.appRef);
     this.namespaces[namespace] = created;
     return created;
   }
@@ -194,6 +198,7 @@ export class WrappedSocket implements WrappedSocketIface<WrappedSocket> {
       this.eventObservables$[eventName] = new Observable((observer: any) => {
         const listener = (data: T) => {
           observer.next(data);
+          this.appRef.tick();
         };
         this.ioSocket.on(eventName, listener as EventListener<Ev>);
         return () => {

@@ -14,18 +14,19 @@
 
 Make sure you're using the proper corresponding version of socket.io on the server.
 
-| Package Version | Socket-io Server Version | Angular version |
-| --------------- | ------------------------ | --------------- |
-| v3.4.0          | v2.2.0                   |                 |
-| v4.1.0          | v4.0.0                   | 12.x            |
-| v4.2.0          | v4.0.0                   | 13.x            |
-| v4.3.0          | v4.5.1                   | 14.x            |
-| v4.4.0          | v4.5.1                   | 15.x            |
-| v4.5.0          | v4.5.1                   | 16.x            |
-| v4.6.1          | v4.7.2                   | 17.x            |
-| v4.7.0          | v4.7.2                   | 18.x            |
-| v4.8.1          | v4.8.1                   | 19.x            |
-| v4.9.0          | v4.8.1                   | 20.x            |
+| Package Version | Socket-io Server Version | Angular version | Notes    |
+| --------------- | ------------------------ | --------------- | -------- |
+| v3.4.0          | v2.2.0                   |                 |          |
+| v4.1.0          | v4.0.0                   | 12.x            |          |
+| v4.2.0          | v4.0.0                   | 13.x            |          |
+| v4.3.0          | v4.5.1                   | 14.x            |          |
+| v4.4.0          | v4.5.1                   | 15.x            |          |
+| v4.5.0          | v4.5.1                   | 16.x            |          |
+| v4.6.1          | v4.7.2                   | 17.x            |          |
+| v4.7.0          | v4.7.2                   | 18.x            |          |
+| v4.8.1          | v4.8.1                   | 19.x            |          |
+| v4.9.0          | v4.8.1                   | 20.x            |          |
+| v4.9.1          | v4.8.1                   | 20.x            | Zoneless |
 
 ## How to use
 
@@ -127,6 +128,92 @@ export class AppModule {}
 ```
 
 Now you can inject `SocketOne`, `SocketTwo` in any other services and / or components.
+
+## Zoneless Implementation
+
+Starting from version `4.9.1`, `ngx-socket-io` no longer depends on zone.js. This means you need to manually trigger Angular's change detection when using this library in a zoneless environment.
+
+Example Usage
+Here’s an example of how to use `ngx-socket-io` in a zoneless Angular application:
+
+```TS
+import { Component, ApplicationRef } from '@angular/core';
+import { WrappedSocket } from 'ngx-socket-io';
+
+@Component({
+  selector: 'app-root',
+  template: `
+    <div>
+      <h1>Socket.IO Example</h1>
+      <p>Message: {{ message }}</p>
+    </div>
+  `,
+})
+export class AppComponent {
+  message: string = '';
+
+  constructor(private socket: WrappedSocket, private appRef: ApplicationRef) {
+    // Listen to events
+    this.socket.fromEvent<string>('message').subscribe((data) => {
+      this.message = data;
+      this.appRef.tick(); // Manually trigger change detection
+    });
+
+    // Emit events
+    this.socket.emit('message', 'Hello from Angular!');
+  }
+}
+```
+
+### Configuration
+
+To configure the `SocketIoModule`, use the `forRoot` method or the `provideSocketIo` function:
+
+Using `forRoot`
+
+```TS
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+
+const config: SocketIoConfig = {
+  url: 'https://your-websocket-server',
+  options: {
+    transports: ['websocket'],
+  },
+};
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [BrowserModule, SocketIoModule.forRoot(config)],
+  bootstrap: [AppComponent],
+})
+export class AppModule {}
+```
+
+Using `provideSocketIo`
+
+```TS
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideSocketIo, SocketIoConfig } from 'ngx-socket-io';
+
+const config: SocketIoConfig = {
+  url: 'https://your-websocket-server',
+  options: {
+    transports: ['websocket'],
+  },
+};
+
+bootstrapApplication(AppComponent, {
+  providers: [provideSocketIo(config)],
+});
+```
+
+#### Notes
+
+- _Manual Change Detection_: Since `zone.js` is no longer required, you must manually trigger Angular's change detection using `ApplicationRef.tick()` or `NgZone.run()` when handling WebSocket events.
+
+- _Compatibility_: Ensure your application is compatible with `Angular` 20+ and `socket.io-client` v4.x.
 
 ## API
 

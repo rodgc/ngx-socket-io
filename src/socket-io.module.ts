@@ -4,13 +4,14 @@ import {
   InjectionToken,
   makeEnvironmentProviders,
   EnvironmentProviders,
+  ApplicationRef,
 } from '@angular/core';
 import { SocketIoConfig } from './config/socket-io.config';
 import { WrappedSocket } from './socket-io.service';
 
 /** Socket factory */
-export function SocketFactory(config: SocketIoConfig) {
-  return new WrappedSocket(config);
+export function SocketFactory(config: SocketIoConfig, appRef: ApplicationRef) {
+  return new WrappedSocket(config, appRef);
 }
 
 export const SOCKET_CONFIG_TOKEN = new InjectionToken<SocketIoConfig>(
@@ -27,7 +28,7 @@ export class SocketIoModule {
         {
           provide: WrappedSocket,
           useFactory: SocketFactory,
-          deps: [SOCKET_CONFIG_TOKEN],
+          deps: [SOCKET_CONFIG_TOKEN, ApplicationRef],
         },
       ],
     };

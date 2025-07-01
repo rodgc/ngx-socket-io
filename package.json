@@ -1,6 +1,6 @@
 {
   "name": "ngx-socket-io",
-  "version": "4.9.0",
+  "version": "4.9.1",
   "description": "Socket.IO module for Angular",
   "main": "index.ts",
   "scripts": {
@@ -27,8 +27,7 @@
     "core-js": "^3.39.0",
     "reflect-metadata": "^0.2.2",
     "socket.io": "^4.8.1",
-    "socket.io-client": "^4.8.1",
-    "zone.js": "~0.15.0"
+    "socket.io-client": "^4.8.1"
   },
   "peerDependencies": {
     "@angular/common": "^20.0.0",

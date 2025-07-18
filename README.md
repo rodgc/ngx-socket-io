@@ -215,6 +215,93 @@ bootstrapApplication(AppComponent, {
 
 - _Compatibility_: Ensure your application is compatible with `Angular` 20+ and `socket.io-client` v4.x.
 
+## Typings
+
+The [Socket.IO types](https://socket.io/docs/v4/typescript/) pattern is supported by both `ngx-socket-io` extended and native wrapped funcions.
+
+Example using the following types:
+
+```TS
+interface ListenEvents {
+  withAck: (callback: (n: number) => void) => void;
+  fromEventSig: (onlyOneArg: FromEventSupportsOnlyOneArg) => void;
+}
+
+interface EmitEvents {
+  noArg: () => void;
+  basicEmit: (a: number, b: string, c: CustomObject) => void;
+}
+
+interface CustomObject {
+  name: string;
+  age: number;
+}
+
+interface FromEventSupportsOnlyOneArg {
+  a: number;
+  b: string;
+  c: CustomObject;
+}
+```
+
+To use with the default `ngx-socket-io` instance, simply add the types to the injected field using one of the following methods:
+
+- `constructor(private socket: Socket<ListenEvents, EmitEvents>) {}`
+- `private socket: Socket<ListenEvents, EmitEvents> = inject(Socket)`
+- `private socket = inject<Socket<ListenEvents, EmitEvents>>(Socket)`
+
+To use with an extension, simply specify in the class definition:
+
+```TS
+...
+export class SocketOne extends Socket<ListenEvents, EmitEvents> {
+...
+```
+
+When using, all types will be inferred automatically.
+```TS
+import { Component } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Socket } from 'ngx-socket-io';
+
+@Component({
+  selector: 'app-root',
+  template: `
+    <button (click)="noArg()">No Arg</button>
+    <button (click)="basicEmit()">Basic Emit</button>
+  `,
+})
+export class App {
+
+  fromEventArg?: FromEventSupportsOnlyOneArg;
+
+  constructor(
+    private socket: Socket<ListenEvents, EmitEvents>
+  ) {
+
+    // Infer arg to the FromEventSupportsOnlyOneArg type.
+    this.socket.fromEvent('fromEventSig')
+      .pipe(takeUntilDestroyed())
+      .subscribe(arg => this.fromEventArg = arg);
+
+    // Infers the callback for a function that takes an argument of type number.
+    this.socket.fromEvent('withAck')
+      .pipe(takeUntilDestroyed())
+      .subscribe(callback => callback(Math.random()));
+  }
+
+  noArg() {
+    // Type error if any more arguments are added.
+    this.socket.emit('noArg');
+  }
+
+  basicEmit() {
+    // Type error if any of the arguments does not match the sequence (number, string, CustomObject) defined in the EmitEvents interface.
+    this.socket.emit('basicEmit', 4.9, 'lib', { name: 'ngx', age: 8 });
+  }
+}
+```
+
 ## API
 
 Most of the functionalities here you are already familiar with.

@@ -163,10 +163,10 @@ export class WrappedSocket<
     return this;
   }
 
-  emit<Ev extends EventNames<EmitEvents>>(
-    eventName: Ev,
-    ...args: EventParams<EmitEvents, Ev>
-  ): this {
+  emit<
+    Ep extends EventParams<EmitEvents, Ev>,
+    Ev extends EventNames<EmitEvents> = EventNames<EmitEvents>,
+  >(eventName: Ev, ...args: Ep): this {
     this.ioSocket.emit(eventName, ...args);
     return this;
   }
@@ -176,10 +176,10 @@ export class WrappedSocket<
     return this;
   }
 
-  emitWithAck<Ev extends EventNames<EmitEvents>>(
-    eventName: Ev,
-    ...args: AllButLast<EventParams<EmitEvents, Ev>>
-  ): Promise<FirstArg<Last<EventParams<EmitEvents, Ev>>>> {
+  emitWithAck<
+    Ep extends EventParams<EmitEvents, Ev>,
+    Ev extends EventNames<EmitEvents> = EventNames<EmitEvents>,
+  >(eventName: Ev, ...args: AllButLast<Ep>): Promise<FirstArg<Last<Ep>>> {
     return this.ioSocket.emitWithAck(eventName, ...args);
   }
 
@@ -201,18 +201,17 @@ export class WrappedSocket<
   }
 
   fromEvent<
-    Ev extends ReservedOrUserEventNames<SocketReservedEvents, ListenEvents>,
-  >(eventName: Ev): Observable<First<EventParams<ListenEvents, Ev>>> {
+    Ep extends First<EventParams<ListenEvents, Ev>>,
+    Ev extends ReservedOrUserEventNames<SocketReservedEvents, ListenEvents> = ReservedOrUserEventNames<SocketReservedEvents, ListenEvents>,
+  >(eventName: Ev): Observable<Ep> {
     if (!this.subscribersCounter[eventName]) {
       this.subscribersCounter[eventName] = 0;
     }
     this.subscribersCounter[eventName]!++;
 
     if (!this.eventObservables$[eventName]) {
-      this.eventObservables$[eventName] = new Observable<
-        First<EventParams<ListenEvents, Ev>>
-      >(observer => {
-        const listener: any = (data: First<EventParams<ListenEvents, Ev>>) => {
+      this.eventObservables$[eventName] = new Observable<Ep>(observer => {
+        const listener: any = (data: Ep) => {
           observer.next(data);
           this.appRef.tick();
         };
@@ -230,13 +229,10 @@ export class WrappedSocket<
   }
 
   fromOneTimeEvent<
-    Ev extends ReservedOrUserEventNames<SocketReservedEvents, ListenEvents>,
-  >(
-    eventName: Ev
-  ): Promise<ReservedOrUserListener<SocketReservedEvents, ListenEvents, Ev>> {
-    return new Promise<ReservedOrUserListener<SocketReservedEvents, ListenEvents, Ev>>(resolve => {
-      this.once<Ev>(eventName, resolve as ReservedOrUserListener<SocketReservedEvents, ListenEvents, Ev>)
-    });
+    Ep extends ReservedOrUserListener<SocketReservedEvents, ListenEvents, Ev>,
+    Ev extends ReservedOrUserEventNames<SocketReservedEvents, ListenEvents> = ReservedOrUserEventNames<SocketReservedEvents, ListenEvents>,
+  >(eventName: Ev): Promise<Ep> {
+    return new Promise<Ep>(resolve => this.once(eventName, resolve as Ep));
   }
 
   listeners<

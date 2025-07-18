@@ -217,6 +217,10 @@ bootstrapApplication(AppComponent, {
 
 ## Typings
 
+Two typing approaches are supported: the Socket.IO Typing Pattern and the Event Payload Inline Typing.
+
+### Socket.IO Types
+
 The [Socket.IO types](https://socket.io/docs/v4/typescript/) pattern is supported by both `ngx-socket-io` extended and native wrapped funcions.
 
 Example using the following types:
@@ -298,6 +302,44 @@ export class App {
   basicEmit() {
     // Type error if any of the arguments does not match the sequence (number, string, CustomObject) defined in the EmitEvents interface.
     this.socket.emit('basicEmit', 4.9, 'lib', { name: 'ngx', age: 8 });
+  }
+}
+```
+
+### Event Payload Inline Types
+
+Inline typing does not restrict or validate the event names supported by the socket, but it is useful for inferring the types of the parameters used by each event.
+
+For this usage, a type variable must be specified in each socket method call. Example using the types defined previously:
+
+```TS
+export class App {
+
+  fromEventArg?: FromEventSupportsOnlyOneArg;
+
+  constructor(
+    private socket: Socket
+  ) {
+
+    // this.socket.fromEvent return a Observable<FromEventSupportsOnlyOneArg>
+    this.socket.fromEvent<FromEventSupportsOnlyOneArg>('fromEventSig')
+      .pipe(takeUntilDestroyed())
+      .subscribe(arg => this.fromEventArg = arg);
+
+    this.socket.fromEvent<(n: number) => void>('withAck')
+      .pipe(takeUntilDestroyed())
+      .subscribe(callback => callback(Math.random()));
+  }
+
+  noArg() {
+    this.socket.emit<[]>('noArg');
+  }
+
+  basicEmit() {
+    // When emitting events, the parameter types must be informed within an array.
+    this.socket.emit<
+      [number, string, CustomObject]
+      >('basicEmit', 4.9, 'lib', { name: 'ngx', age: 8 });
   }
 }
 ```

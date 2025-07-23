@@ -1,3 +1,4 @@
+import { ApplicationRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { share } from 'rxjs/operators';
 
@@ -7,9 +8,22 @@ import type {
   ReservedOrUserListener,
   ReservedOrUserEventNames,
   DefaultEventsMap,
+  EventsMap,
+  EventNames,
+  EventParams,
 } from '@socket.io/component-emitter';
 
-export type IoSocket = Socket;
+import { SocketIoConfig } from './config/socket-io.config';
+
+export type IoSocket<
+  ListenEvents extends EventsMap = DefaultEventsMap,
+  EmitEvents extends EventsMap = ListenEvents,
+> = Socket<ListenEvents, EmitEvents>;
+// socket.io-client internal types for emitWithAck
+export type First<T extends any[]> = T extends [infer F, ...infer L] ? F : any;
+export type Last<T extends any[]> = T extends [...infer H, infer L] ? L : any;
+export type AllButLast<T extends any[]> = T extends [...infer H, infer L] ? H : any[];
+export type FirstArg<T> = T extends (arg: infer Param) => infer Result ? Param : any;
 // This is not exported in the original, but let's export as helpers for those declaring disconnect handlers
 export type DisconnectDescription =
   | Error
@@ -28,19 +42,6 @@ interface SocketReservedEvents {
   ) => void;
 }
 
-type EventNames = ReservedOrUserEventNames<
-  SocketReservedEvents,
-  DefaultEventsMap
->;
-type EventListener<Ev extends EventNames> = ReservedOrUserListener<
-  SocketReservedEvents,
-  DefaultEventsMap,
-  Ev
->;
-type EventParameters<Ev extends EventNames> = Parameters<EventListener<Ev>>;
-type EventPayload<Ev extends EventNames> =
-  EventParameters<Ev> extends [] ? undefined : EventParameters<Ev>[0];
-
 type IgnoredWrapperEvents = 'receiveBuffer' | 'sendBuffer';
 
 type WrappedSocketIface<Wrapper> = {
@@ -53,14 +54,14 @@ type WrappedSocketIface<Wrapper> = {
       : IoSocket[K];
 };
 
-import { SocketIoConfig } from './config/socket-io.config';
-import { ApplicationRef } from '@angular/core';
-
-export class WrappedSocket implements WrappedSocketIface<WrappedSocket> {
-  private readonly subscribersCounter: Record<string, number> = {};
-  private readonly eventObservables$: Record<string, Observable<any>> = {};
+export class WrappedSocket<
+  ListenEvents extends EventsMap = DefaultEventsMap,
+  EmitEvents extends EventsMap = ListenEvents,
+> implements WrappedSocketIface<WrappedSocket> {
+  private readonly subscribersCounter: Partial<Record<ReservedOrUserEventNames<SocketReservedEvents, ListenEvents>, number>> = {};
+  private readonly eventObservables$: Partial<Record<ReservedOrUserEventNames<SocketReservedEvents, ListenEvents>, Observable<any>>> = {};
   private readonly namespaces: Record<string, WrappedSocket> = {};
-  readonly ioSocket: IoSocket;
+  readonly ioSocket: IoSocket<ListenEvents, EmitEvents>;
   private readonly emptyConfig: SocketIoConfig = {
     url: '',
     options: {},
@@ -136,16 +137,19 @@ export class WrappedSocket implements WrappedSocketIface<WrappedSocket> {
     return created;
   }
 
-  on<Ev extends EventNames>(eventName: Ev, callback: EventListener<Ev>): this {
-    this.ioSocket.on(eventName, callback);
+  on<Ev extends ReservedOrUserEventNames<SocketReservedEvents, ListenEvents>>(
+    eventName: Ev,
+    callback: ReservedOrUserListener<SocketReservedEvents, ListenEvents, Ev>
+  ): this {
+    this.ioSocket.on<Ev>(eventName, callback);
     return this;
   }
 
-  once<Ev extends EventNames>(
+  once<Ev extends ReservedOrUserEventNames<SocketReservedEvents, ListenEvents>>(
     eventName: Ev,
-    callback: EventListener<Ev>
+    callback: ReservedOrUserListener<SocketReservedEvents, ListenEvents, Ev>
   ): this {
-    this.ioSocket.once(eventName, callback);
+    this.ioSocket.once<Ev>(eventName, callback);
     return this;
   }
 
@@ -159,8 +163,11 @@ export class WrappedSocket implements WrappedSocketIface<WrappedSocket> {
     return this;
   }
 
-  emit(_eventName: string, ..._args: any[]): this {
-    this.ioSocket.emit.apply(this.ioSocket, arguments);
+  emit<
+    Ep extends EventParams<EmitEvents, Ev>,
+    Ev extends EventNames<EmitEvents> = EventNames<EmitEvents>,
+  >(eventName: Ev, ...args: Ep): this {
+    this.ioSocket.emit(eventName, ...args);
     return this;
   }
 
@@ -169,45 +176,50 @@ export class WrappedSocket implements WrappedSocketIface<WrappedSocket> {
     return this;
   }
 
-  emitWithAck<T>(_eventName: string, ..._args: any[]): Promise<T> {
-    return this.ioSocket.emitWithAck.apply(this.ioSocket, arguments);
+  emitWithAck<
+    Ep extends EventParams<EmitEvents, Ev>,
+    Ev extends EventNames<EmitEvents> = EventNames<EmitEvents>,
+  >(eventName: Ev, ...args: AllButLast<Ep>): Promise<FirstArg<Last<Ep>>> {
+    return this.ioSocket.emitWithAck(eventName, ...args);
   }
 
-  removeListener<Ev extends EventNames>(
-    _eventName?: Ev,
-    _callback?: EventListener<Ev>
+  removeListener<
+    Ev extends ReservedOrUserEventNames<SocketReservedEvents, ListenEvents>,
+  >(
+    eventName?: Ev,
+    callback?: ReservedOrUserListener<SocketReservedEvents, ListenEvents, Ev>
   ): this {
-    this.ioSocket.removeListener.apply(this.ioSocket, arguments);
+    this.ioSocket.removeListener<Ev>(eventName, callback);
     return this;
   }
 
-  removeAllListeners<Ev extends EventNames>(_eventName?: Ev): this {
-    this.ioSocket.removeAllListeners.apply(this.ioSocket, arguments);
+  removeAllListeners<
+    Ev extends ReservedOrUserEventNames<SocketReservedEvents, ListenEvents>,
+  >(eventName?: Ev): this {
+    this.ioSocket.removeAllListeners<Ev>(eventName);
     return this;
   }
 
-  fromEvent<T extends EventPayload<Ev>, Ev extends EventNames>(
-    eventName: Ev
-  ): Observable<T> {
+  fromEvent<
+    Ep extends First<EventParams<ListenEvents, Ev>>,
+    Ev extends ReservedOrUserEventNames<SocketReservedEvents, ListenEvents> = ReservedOrUserEventNames<SocketReservedEvents, ListenEvents>,
+  >(eventName: Ev): Observable<Ep> {
     if (!this.subscribersCounter[eventName]) {
       this.subscribersCounter[eventName] = 0;
     }
-    this.subscribersCounter[eventName]++;
+    this.subscribersCounter[eventName]!++;
 
     if (!this.eventObservables$[eventName]) {
-      this.eventObservables$[eventName] = new Observable((observer: any) => {
-        const listener = (data: T) => {
+      this.eventObservables$[eventName] = new Observable<Ep>(observer => {
+        const listener: any = (data: Ep) => {
           observer.next(data);
           this.appRef.tick();
         };
-        this.ioSocket.on(eventName, listener as EventListener<Ev>);
+        this.ioSocket.on(eventName, listener);
         return () => {
-          this.subscribersCounter[eventName]--;
+          this.subscribersCounter[eventName]!--;
           if (this.subscribersCounter[eventName] === 0) {
-            this.ioSocket.removeListener(
-              eventName,
-              listener as EventListener<Ev>
-            );
+            this.ioSocket.removeListener(eventName, listener);
             delete this.eventObservables$[eventName];
           }
         };
@@ -216,19 +228,24 @@ export class WrappedSocket implements WrappedSocketIface<WrappedSocket> {
     return this.eventObservables$[eventName];
   }
 
-  fromOneTimeEvent<T extends EventPayload<Ev>, Ev extends EventNames>(
-    eventName: Ev
-  ): Promise<T> {
-    return new Promise<T>(resolve =>
-      this.once(eventName, resolve as EventListener<Ev>)
-    );
+  fromOneTimeEvent<
+    Ep extends ReservedOrUserListener<SocketReservedEvents, ListenEvents, Ev>,
+    Ev extends ReservedOrUserEventNames<SocketReservedEvents, ListenEvents> = ReservedOrUserEventNames<SocketReservedEvents, ListenEvents>,
+  >(eventName: Ev): Promise<Ep> {
+    return new Promise<Ep>(resolve => this.once(eventName, resolve as Ep));
   }
 
-  listeners<Ev extends EventNames>(eventName: Ev): EventListener<Ev>[] {
+  listeners<
+    Ev extends ReservedOrUserEventNames<SocketReservedEvents, ListenEvents>,
+  >(
+    eventName: Ev
+  ): ReservedOrUserListener<SocketReservedEvents, ListenEvents, Ev>[] {
     return this.ioSocket.listeners(eventName);
   }
 
-  hasListeners<Ev extends EventNames>(eventName: Ev): boolean {
+  hasListeners<
+    Ev extends ReservedOrUserEventNames<SocketReservedEvents, ListenEvents>,
+  >(eventName: Ev): boolean {
     return this.ioSocket.hasListeners(eventName);
   }
 
@@ -240,11 +257,11 @@ export class WrappedSocket implements WrappedSocketIface<WrappedSocket> {
     return this.ioSocket.listenersAnyOutgoing();
   }
 
-  off<Ev extends EventNames>(
+  off<Ev extends ReservedOrUserEventNames<SocketReservedEvents, ListenEvents>>(
     eventName?: Ev,
-    listener?: EventListener<Ev>
+    listener?: ReservedOrUserListener<SocketReservedEvents, ListenEvents, Ev>
   ): this {
-    this.ioSocket.off(eventName, listener);
+    this.ioSocket.off<Ev>(eventName, listener);
     return this;
   }
 

@@ -43,7 +43,7 @@ export const provideSocketIo = (
     {
       provide: WrappedSocket,
       useFactory: SocketFactory,
-      deps: [SOCKET_CONFIG_TOKEN],
+      deps: [SOCKET_CONFIG_TOKEN, ApplicationRef],
     },
   ]);
 };

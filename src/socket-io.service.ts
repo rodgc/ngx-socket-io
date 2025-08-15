@@ -20,6 +20,16 @@ export type IoSocket<
   EmitEvents extends EventsMap = ListenEvents,
 > = Socket<ListenEvents, EmitEvents>;
 // socket.io-client internal types for emitWithAck
+type PrependTimeoutError<T extends any[]> = {
+  [K in keyof T]: T[K] extends (...args: infer Params) => infer Result
+    ? (err: Error, ...args: Params) => Result
+    : T[K];
+};
+export type DecorateAcknowledgements<E> = {
+  [K in keyof E]: E[K] extends (...args: infer Params) => infer Result
+    ? (...args: PrependTimeoutError<Params>) => Result
+    : E[K];
+};
 export type First<T extends any[]> = T extends [infer F, ...infer L] ? F : any;
 export type Last<T extends any[]> = T extends [...infer H, infer L] ? L : any;
 export type AllButLast<T extends any[]> = T extends [...infer H, infer L] ? H : any[];
@@ -42,22 +52,24 @@ interface SocketReservedEvents {
   ) => void;
 }
 
-type IgnoredWrapperEvents = 'receiveBuffer' | 'sendBuffer';
+type IgnoredWrapperEvents = 'receiveBuffer' | 'sendBuffer' | 'timeout';
 
-type WrappedSocketIface<Wrapper> = {
-  [K in Exclude<keyof IoSocket, IgnoredWrapperEvents>]: IoSocket[K] extends (
-    ...args: any[]
-  ) => IoSocket
-    ? (...args: Parameters<IoSocket[K]>) => Wrapper // chainable methods on().off().emit()...
-    : IoSocket[K] extends IoSocket
-      ? Wrapper // ie: volatile is a getter
-      : IoSocket[K];
-};
+type WrappedSocketIface<Wrapper> = Wrapper extends WrappedSocket<infer ListenEvents, infer EmitEvents>
+  ? {
+    [K in Exclude<keyof IoSocket<ListenEvents, EmitEvents>, IgnoredWrapperEvents>]: IoSocket<ListenEvents, EmitEvents>[K] extends (
+      ...args: any[]
+    ) => IoSocket<ListenEvents, EmitEvents>
+      ? (...args: Parameters<IoSocket<ListenEvents, EmitEvents>[K]>) => Wrapper // chainable methods on().off().emit()...
+      : IoSocket<ListenEvents, EmitEvents>[K] extends IoSocket<ListenEvents, EmitEvents>
+        ? Wrapper // ie: volatile is a getter
+        : IoSocket<ListenEvents, EmitEvents>[K];
+  }
+  : never;
 
 export class WrappedSocket<
   ListenEvents extends EventsMap = DefaultEventsMap,
   EmitEvents extends EventsMap = ListenEvents,
-> implements WrappedSocketIface<WrappedSocket> {
+> implements WrappedSocketIface<WrappedSocket<ListenEvents, EmitEvents>> {
   private readonly subscribersCounter: Partial<Record<ReservedOrUserEventNames<SocketReservedEvents, ListenEvents>, number>> = {};
   private readonly eventObservables$: Partial<Record<ReservedOrUserEventNames<SocketReservedEvents, ListenEvents>, Observable<any>>> = {};
   private readonly namespaces: Record<string, WrappedSocket> = {};
@@ -96,12 +108,12 @@ export class WrappedSocket<
   }
 
   /** alias to connect */
-  get open(): WrappedSocket['connect'] {
+  get open(): WrappedSocket<ListenEvents, EmitEvents>['connect'] {
     return this.connect;
   }
 
   /** alias to disconnect */
-  get close(): WrappedSocket['disconnect'] {
+  get close(): WrappedSocket<ListenEvents, EmitEvents>['disconnect'] {
     return this.disconnect;
   }
 
@@ -171,8 +183,8 @@ export class WrappedSocket<
     return this;
   }
 
-  send(..._args: any[]): this {
-    this.ioSocket.send.apply(this.ioSocket, arguments);
+  send(...args: any[]): this {
+    this.ioSocket.send(...args);
     return this;
   }
 
@@ -297,7 +309,9 @@ export class WrappedSocket<
     return this;
   }
 
-  timeout(value: number): this {
+  timeout(
+    value: number
+  ): WrappedSocket<ListenEvents, DecorateAcknowledgements<EmitEvents>> {
     this.ioSocket.timeout(value);
     return this;
   }

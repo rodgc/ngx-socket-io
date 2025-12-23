@@ -22,8 +22,12 @@ export type IoSocket<
 // socket.io-client internal types for emitWithAck
 export type First<T extends any[]> = T extends [infer F, ...infer L] ? F : any;
 export type Last<T extends any[]> = T extends [...infer H, infer L] ? L : any;
-export type AllButLast<T extends any[]> = T extends [...infer H, infer L] ? H : any[];
-export type FirstArg<T> = T extends (arg: infer Param) => infer Result ? Param : any;
+export type AllButLast<T extends any[]> = T extends [...infer H, infer L]
+  ? H
+  : any[];
+export type FirstArg<T> = T extends (arg: infer Param) => infer Result
+  ? Param
+  : any;
 // This is not exported in the original, but let's export as helpers for those declaring disconnect handlers
 export type DisconnectDescription =
   | Error
@@ -57,9 +61,17 @@ type WrappedSocketIface<Wrapper> = {
 export class WrappedSocket<
   ListenEvents extends EventsMap = DefaultEventsMap,
   EmitEvents extends EventsMap = ListenEvents,
-> implements WrappedSocketIface<WrappedSocket> {
-  private readonly subscribersCounter: Partial<Record<ReservedOrUserEventNames<SocketReservedEvents, ListenEvents>, number>> = {};
-  private readonly eventObservables$: Partial<Record<ReservedOrUserEventNames<SocketReservedEvents, ListenEvents>, Observable<any>>> = {};
+> implements WrappedSocketIface<WrappedSocket>
+{
+  private readonly subscribersCounter: Partial<
+    Record<ReservedOrUserEventNames<SocketReservedEvents, ListenEvents>, number>
+  > = {};
+  private readonly eventObservables$: Partial<
+    Record<
+      ReservedOrUserEventNames<SocketReservedEvents, ListenEvents>,
+      Observable<any>
+    >
+  > = {};
   private readonly namespaces: Record<string, WrappedSocket> = {};
   readonly ioSocket: IoSocket<ListenEvents, EmitEvents>;
   private readonly emptyConfig: SocketIoConfig = {
@@ -202,7 +214,10 @@ export class WrappedSocket<
 
   fromEvent<
     Ep extends First<EventParams<ListenEvents, Ev>>,
-    Ev extends ReservedOrUserEventNames<SocketReservedEvents, ListenEvents> = ReservedOrUserEventNames<SocketReservedEvents, ListenEvents>,
+    Ev extends ReservedOrUserEventNames<
+      SocketReservedEvents,
+      ListenEvents
+    > = ReservedOrUserEventNames<SocketReservedEvents, ListenEvents>,
   >(eventName: Ev): Observable<Ep> {
     if (!this.subscribersCounter[eventName]) {
       this.subscribersCounter[eventName] = 0;
@@ -230,7 +245,10 @@ export class WrappedSocket<
 
   fromOneTimeEvent<
     Ep extends ReservedOrUserListener<SocketReservedEvents, ListenEvents, Ev>,
-    Ev extends ReservedOrUserEventNames<SocketReservedEvents, ListenEvents> = ReservedOrUserEventNames<SocketReservedEvents, ListenEvents>,
+    Ev extends ReservedOrUserEventNames<
+      SocketReservedEvents,
+      ListenEvents
+    > = ReservedOrUserEventNames<SocketReservedEvents, ListenEvents>,
   >(eventName: Ev): Promise<Ep> {
     return new Promise<Ep>(resolve => this.once(eventName, resolve as Ep));
   }

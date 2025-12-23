@@ -28,9 +28,12 @@
 /connect.lock
 /coverage/*
 /libpeerconnection.log
-npm-debug.log
 testem.log
 /typings
+
+# NPM
+npm-debug.log
+.npmrc
 
 # e2e
 /e2e/*.js

@@ -16,17 +16,18 @@ Make sure you're using the proper corresponding version of socket.io on the serv
 
 | Package Version | Socket-io Server Version | Angular version | Notes    |
 | --------------- | ------------------------ | --------------- | -------- |
-| v3.4.0          | v2.2.0                   |                 |          |
-| v4.1.0          | v4.0.0                   | 12.x            |          |
-| v4.2.0          | v4.0.0                   | 13.x            |          |
-| v4.3.0          | v4.5.1                   | 14.x            |          |
-| v4.4.0          | v4.5.1                   | 15.x            |          |
-| v4.5.0          | v4.5.1                   | 16.x            |          |
-| v4.6.1          | v4.7.2                   | 17.x            |          |
-| v4.7.0          | v4.7.2                   | 18.x            |          |
-| v4.8.1          | v4.8.1                   | 19.x            |          |
-| v4.9.0          | v4.8.1                   | 20.x            |          |
+| v4.10.0         | v4.8.1                   | 21.x            | Zoneless |
 | v4.9.1          | v4.8.1                   | 20.x            | Zoneless |
+| v4.9.0          | v4.8.1                   | 20.x            |          |
+| v4.8.1          | v4.8.1                   | 19.x            |          |
+| v4.7.0          | v4.7.2                   | 18.x            |          |
+| v4.6.1          | v4.7.2                   | 17.x            |          |
+| v4.5.0          | v4.5.1                   | 16.x            |          |
+| v4.4.0          | v4.5.1                   | 15.x            |          |
+| v4.3.0          | v4.5.1                   | 14.x            |          |
+| v4.2.0          | v4.0.0                   | 13.x            |          |
+| v4.1.0          | v4.0.0                   | 12.x            |          |
+| v3.4.0          | v2.2.0                   |                 |          |
 
 ## How to use
 
@@ -213,7 +214,7 @@ bootstrapApplication(AppComponent, {
 
 - _Manual Change Detection_: Since `zone.js` is no longer required, you must manually trigger Angular's change detection using `ApplicationRef.tick()` or `NgZone.run()` when handling WebSocket events.
 
-- _Compatibility_: Ensure your application is compatible with `Angular` 20+ and `socket.io-client` v4.x.
+- _Compatibility_: Ensure your application is compatible with `Angular` 21+ and `socket.io-client` v4.x.
 
 ## Typings
 
@@ -263,6 +264,7 @@ export class SocketOne extends Socket<ListenEvents, EmitEvents> {
 ```
 
 When using, all types will be inferred automatically.
+
 ```TS
 import { Component } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';

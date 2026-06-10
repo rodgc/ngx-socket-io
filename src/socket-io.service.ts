@@ -61,8 +61,7 @@ type WrappedSocketIface<Wrapper> = {
 export class WrappedSocket<
   ListenEvents extends EventsMap = DefaultEventsMap,
   EmitEvents extends EventsMap = ListenEvents,
-> implements WrappedSocketIface<WrappedSocket>
-{
+> {
   private readonly subscribersCounter: Partial<
     Record<ReservedOrUserEventNames<SocketReservedEvents, ListenEvents>, number>
   > = {};
@@ -183,8 +182,8 @@ export class WrappedSocket<
     return this;
   }
 
-  send(..._args: any[]): this {
-    this.ioSocket.send.apply(this.ioSocket, arguments);
+  send(...args: any[]): this {
+    this.ioSocket.send(...args);
     return this;
   }
 

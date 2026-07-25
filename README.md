@@ -16,6 +16,7 @@ Make sure you're using the proper corresponding version of socket.io on the serv
 
 | Package Version | Socket-io Server Version | Angular version | Notes    |
 | --------------- | ------------------------ | --------------- | -------- |
+| v4.11.0         | v4.8.1                   | 22.x            | Zoneless |
 | v4.10.0         | v4.8.1                   | 21.x            | Zoneless |
 | v4.9.1          | v4.8.1                   | 20.x            | Zoneless |
 | v4.9.0          | v4.8.1                   | 20.x            |          |
@@ -214,7 +215,7 @@ bootstrapApplication(AppComponent, {
 
 - _Manual Change Detection_: Since `zone.js` is no longer required, you must manually trigger Angular's change detection using `ApplicationRef.tick()` or `NgZone.run()` when handling WebSocket events.
 
-- _Compatibility_: Ensure your application is compatible with `Angular` 21+ and `socket.io-client` v4.x.
+- _Compatibility_: Ensure your application is compatible with `Angular` 22+ and `socket.io-client` v4.x.
 
 ## Typings
 
